@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)http://hgs.xiumi.us/uedit/xiumi-ue-dialog-v5.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>XIUMI connect</title>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #xiumi {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: none;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<iframe id="xiumi" src="./XIUMI connect_files/v5.html">
+</iframe>
+<script type="text/javascript" src="./XIUMI connect_files/internal.js.下载"></script>
+<script>
+    var xiumi = document.getElementById('xiumi');
+    var xiumi_url = window.location.protocol + "//xiumi.us";
+    xiumi.onload = function () {
+        console.log("postMessage");
+        xiumi.contentWindow.postMessage('ready', xiumi_url);
+    };
+    document.addEventListener("mousewheel", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+    window.addEventListener('message', function (event) {
+        if (event.origin == xiumi_url) {
+            editor.execCommand('insertHtml', event.data);
+            dialog.close();
+        }
+    }, false);
+</script>
+
+
+</body></html>

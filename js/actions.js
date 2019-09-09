@@ -1,7 +1,7 @@
 /**
  * actions
  * @param {type} $
- * @param {type} name
+ * @param {type} name 
  * @returns {undefined}
  */
 (function($, name) {
