@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天港新闻列表页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../dist/css/mui.css">
+    <link rel="stylesheet" href="../../css/app.css">
+
+    <style>
+        .mui-card-header {
+            height: 50vw;
+        }
+
+        .info-item-time {
+            margin: 0 auto;
+            text-align: center;
+            font-size: 3vw;
+            width: 35vw;
+            background: #BEBEBE;
+            color: white;
+            border-radius: 2px;
+        }
+
+        .info-item {
+            margin-top: 30px;
+        }
+        .bottom-foot{
+            /*margin-bottom: 10px;*/
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../js/layuiadmin/layui/css/layui.css">
+
+</head>
+<body>
+<div id="info" class="mui-content">
+
+    <div class="info-item" v-for="(item,idx) in list">
+        <div class="info-item-time">{{item.newsTime}}</div>
+        <div class="mui-card">
+            <div class="mui-card-header mui-card-media" :style="item.indexImg">
+                <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
+            </div>
+            <div class="mui-card-content">
+                <div class="mui-card-content-inner">
+                    <p>{{item.newsTime}}</p>
+                    <p style="color: #333;">{{item.remark}}</p>
+                </div>
+            </div>
+            <div class="mui-card-footer" :data-id="item.id" @click="toherf($event)">
+                <div class="mui-card-link">详情</div>
+                <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="have" class="bottom-foot" ><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}</div>
+    <div v-else  class="bottom-foot" >{{loading.finish}}</div>
+
+</div>
+</body>
+<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../dist/js/mui.min.js"></script>
+<script src="../../js/jquery.cookie.js"></script>
+<script src="../../js/vue-2-6-10.js"></script>
+<script>
+    let app = new Vue({
+        el: "#info",
+        data: {
+            page: 1,//页数
+            limit: 10,//每页显示多少条数据
+            have:true,//下一页是否有数据
+            islock:true,//是否锁住
+            loading:{
+                loadingTitle:"加载中",//加载中显示的文本,
+                finish:"没有更多了",//没有更多数据显示的文本
+            },
+            list: [
+                {
+                    newsTime: "2019-09-08 12:30:23",//新闻时间
+                    indexImg: "background-image:url(./images/muwu.jpg)",//新闻图片
+                    title: "天港新闻",//新闻标题
+                    remark: "新闻摘要",//新闻摘要
+                    id: "12"//新闻详情页跳转的id
+                },
+                {
+                    newsTime: "2019-09-08 12:30:23",//新闻时间
+                    indexImg: "background-image:url(./images/muwu.jpg)",//新闻图片
+                    title: "天港新闻",//新闻标题
+                    remark: "新闻摘要",//新闻摘要
+                    id: "12"//新闻详情页跳转的id
+                },
+                {
+                    newsTime: "2019-09-08 12:30:23",//新闻时间
+                    indexImg: "background-image:url(./images/muwu.jpg)",//新闻图片
+                    title: "天港新闻",//新闻标题
+                    remark: "新闻摘要",//新闻摘要
+                    id: "12"//新闻详情页跳转的id
+                }
+            ]
+        },
+        methods: {
+            toherf(event) {//点击跳转
+                let _this = $(event.target);
+                let id = _this.data("id");
+                console.log(id);
+                window.location.href = "http://www.baidu.com";
+            }
+        }
+
+    });
+
+
+
+
+
+
+
+    $(window).scroll(function(){
+         // console.log($(window).scrollTop() + $(window).height()-$(document).height());
+        let i= $(window).scrollTop() + $(window).height()-$(document).height();
+        if (i==0||i==0.5) {//页面滚动到了底部
+
+
+            if(app.have&&app.islock){//如果不是最后一页
+                app.islock = false;//锁住
+                console.log("发送下一页请求-----");
+
+                let page = app.page;
+                let limit = app.limit;
+
+                setTimeout(function () {
+                    app.islock=true;//开锁,,请求成功后就开锁
+                    app.list.push( {
+                        newsTime: "2019-09-08 12:30:23",//新闻时间
+                        indexImg: "background-image:url(./images/muwu.jpg)",//新闻图片
+                        title: "天港新闻",//新闻标题
+                        remark: "新闻摘要",//新闻摘要
+                        id: "12"//新闻详情页跳转的id
+                    });
+                },10*1000);
+
+
+             }
+
+        }
+    });
+
+
+
+
+</script>
+
+</html>
