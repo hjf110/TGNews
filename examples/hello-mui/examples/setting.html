@@ -112,7 +112,7 @@
 			.mui-table-view {
 				margin-top: 20px;
 			}
-			
+
 			.mui-table-view span.mui-pull-right {
 				color: #999;
 			}
@@ -155,6 +155,8 @@
 			.mui-ios .mui-navbar .mui-bar .mui-title {
 				position: static;
 			}
+
+
 			/*问题反馈在setting页面单独的css*/
 			#feedback .mui-popover{
 				position: fixed;
@@ -166,7 +168,7 @@
 			    margin-top: 0px;
 			}
 			/*问题反馈在setting页面单独的css==end*/
-			
+
 		</style>
 		<link rel="stylesheet" type="text/css" href="../css/feedback.css" />
 	</head>
@@ -567,7 +569,7 @@
 		mui('.mui-scroll-wrapper').scroll();
 		//分享操作
 		var shares = {};
-		
+
 		mui.plusReady(function() {
 			plus.share.getServices(function(s) {
 				if (s && s.length > 0) {
@@ -580,14 +582,14 @@
 				console.log("获取分享服务列表失败");
 			});
 		});
-		
+
 		setTimeout(function () {
 			defaultImg();
 			setTimeout(function() {
 				initImgPreview();
 			}, 300);
 		},500);
-		
+
 		//分享链接点击事件
 		document.getElementById("share").addEventListener('tap', function() {
 			var ids = [{
@@ -677,13 +679,13 @@
 			}else{
 				location.href = 'tel:114';
 			}
-			
+
 		});
 		//		//意见反馈
 		//		document.getElementById("quest").addEventListener('tap', function() {
-		//			
+		//
 		//		});
-		//		
+		//
 		//检查更新
 		document.getElementById("update").addEventListener('tap', function() {
 			var server = "http://www.dcloud.io/check/update"; //获取升级描述文件服务器地址
@@ -754,9 +756,9 @@
 						default:
 							break
 					}
-				})	
+				})
 			}
-			
+
 		});
 
 		function getImage() {
@@ -841,7 +843,7 @@
 				document.getElementById("head-img").src = '../images/logo.png';
 				document.getElementById("head-img1").src = '../images/logo.png';
 			}
-			
+
 		}
 		document.getElementById("head-img1").addEventListener('tap', function(e) {
 			e.stopPropagation();
@@ -900,11 +902,11 @@
 				var _slider = mui(slider).slider();
 			}
 		}
-		
+
 		if(mui.os.stream){
 			document.getElementById("check_update").display = "none";
 		}
-		
+
 	</script>
 
 </html>
