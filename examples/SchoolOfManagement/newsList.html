@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天港新闻列表页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../dist/css/mui.css">
+    <link rel="stylesheet" href="../../css/app.css">
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <style>
+        .mui-card-header {
+            height: 50vw;
+        }
+
+        .info-item-time {
+            margin: 0 auto;
+            text-align: center;
+            font-size: 3vw;
+            width: 35vw;
+            height: 6vw;
+            line-height: 6vw;
+            background: #BEBEBE;
+            color: white;
+            border-radius: 2px;
+        }
+
+        .info-item {
+            margin-top: 30px;
+        }
+
+        .bottom-foot {
+            /*margin-bottom: 10px;*/
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .mui-bar-tab {
+            bottom: -1px;
+        }
+
+        .mui-bar-tab {
+            height: 7vh;
+        }
+
+        .mui-popover {
+            width: 120px;
+        }
+
+        .mui-table-view-cell {
+            text-align: right;
+        }
+        .mui-bar{
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+    </style>
+    <link rel="stylesheet" href="../../js/layuiadmin/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/foot-tabBar-weix.css">
+
+
+</head>
+<body>
+<div id="info" class="mui-content">
+    <div style="height: 93vh;overflow:auto;">
+        <div class="info-item" v-for="(item,idx) in list">
+            <div class="info-item-time">{{item.newsTime}}</div>
+            <div class="mui-card">
+                <div class="mui-card-header mui-card-media" :style="item.indexImg">
+                    <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
+                </div>
+                <div class="mui-card-content">
+                    <div class="mui-card-content-inner">
+                        <p>{{item.newsTime}}</p>
+                        <p style="color: #333;">{{item.remark}}</p>
+                    </div>
+                </div>
+                <div class="mui-card-footer" :data-id="item.id" @click="toherf($event)">
+                    <div class="mui-card-link">详情</div>
+                    <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="have" class="bottom-foot"><i
+                class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}
+        </div>
+        <div v-else class="bottom-foot">{{loading.finish}}</div>
+        <!--        <div style="height: 50px;"></div>-->
+
+    </div>
+
+
+    <nav class="mui-bar mui-bar-tab ">
+        <a class="mui-tab-item" href="#Popover_0">新人必点</a>
+        <a class="mui-tab-item" href="#Popover_1">学院指南</a>
+        <a class="mui-tab-item">学习平台</a>
+        <a class="mui-tab-item">学院动态</a>
+    </nav>
+    <div id="Popover_0" class="mui-popover mui-bar-popover">
+        <div class="mui-popover-arrow"></div>
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="#">高管认知</a>
+            </li>
+            <li class="mui-table-view-cell"><a href="#">分店介绍</a>
+            </li>
+        </ul>
+    </div>
+    <div id="Popover_1" class="mui-popover mui-bar-popover">
+        <div class="mui-popover-arrow"></div>
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="#">学院简介</a>
+            </li>
+            <li class="mui-table-view-cell"><a href="#">师资团队</a>
+            </li>
+            <li class="mui-table-view-cell"><a href="#">培训制度</a>
+            </li>
+        </ul>
+    </div>
+    <div id="Popover_2" class="mui-popover mui-bar-popover">
+        <div class="mui-popover-arrow"></div>
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="#">公司新闻</a>
+            </li>
+            <li class="mui-table-view-cell"><a href="#">行业新闻</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+</body>
+<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../dist/js/mui.min.js"></script>
+<script src="../../js/jquery.cookie.js"></script>
+<script src="../../js/vue-2-6-10.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script>
+    let app = new Vue({
+        el: "#info",
+        data: {
+            page: 1,//页数
+            limit: 10,//每页显示多少条数据
+            have: true,//下一页是否有数据
+            islock: true,//是否锁住
+            loading: {
+                loadingTitle: "加载中",//加载中显示的文本,
+                finish: "没有更多了",//没有更多数据显示的文本
+            },
+            list: [
+                {
+                    newsTime: "2019-09-08 12:30:23",//新闻时间
+                    indexImg: "background-image:url(../images/muwu.jpg)",//新闻图片
+                    title: "天港新闻",//新闻标题
+                    remark: "新闻摘要",//新闻摘要
+                    id: "12"//新闻详情页跳转的id
+                },
+                {
+                    newsTime: "2019-09-08 12:30:23",//新闻时间
+                    indexImg: "background-image:url(../images/shuijiao.jpg)",//新闻图片
+                    title: "天港新闻",//新闻标题
+                    remark: "新闻摘要",//新闻摘要
+                    id: "12"//新闻详情页跳转的id
+                },
+                {
+                    newsTime: "2019-09-08 12:30:23",//新闻时间
+                    indexImg: "background-image:url(../images/yuantiao.jpg)",//新闻图片
+                    title: "天港新闻",//新闻标题
+                    remark: "新闻摘要",//新闻摘要
+                    id: "12"//新闻详情页跳转的id
+                }
+            ]
+        },
+        methods: {
+            toherf(event) {//点击跳转
+                let _this = $(event.target);
+                let id = _this.data("id");
+                console.log(id);
+                window.location.href = "http://www.baidu.com";
+            }
+        }
+
+    });
+
+
+    $(window).scroll(function () {
+        // console.log($(window).scrollTop() + $(window).height()-$(document).height());
+        let i = $(window).scrollTop() + $(window).height() - $(document).height();
+        if (i == 0 || i == 0.5) {//页面滚动到了底部
+
+
+            if (app.have && app.islock) {//如果不是最后一页
+                app.islock = false;//锁住
+                console.log("发送下一页请求-----");
+
+                let page = app.page;
+                let limit = app.limit;
+
+                setTimeout(function () {
+                    app.islock = true;//开锁,,请求成功后就开锁
+                    app.list.push({
+                        newsTime: "2019-09-08 12:30:23",//新闻时间
+                        indexImg: "background-image:url(../images/muwu.jpg)",//新闻图片
+                        title: "天港新闻",//新闻标题
+                        remark: "新闻摘要",//新闻摘要
+                        id: "12"//新闻详情页跳转的id
+                    });
+                }, 10 * 1000);
+
+
+            }
+
+        }
+    });
+
+
+</script>
+
+</html>

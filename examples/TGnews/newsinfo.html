@@ -105,7 +105,23 @@
             bottom: 60px;
         }
 
+        .no {
+            background: #E0E0E0;
+            color: #8E8E8E;
+            border: none;
+        }
 
+
+        .yes {
+            background: #00BB00;
+            color: white;
+            border: none;
+        }
+        * { touch-action: pan-y; }
+        .mui-bar{
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
     </style>
 
 
@@ -124,7 +140,7 @@
     <!--    </header>-->
 
 
-    <div id="left" >
+    <div id="left">
         <div class="mui-card">
             <div class="mui-card-header mui-card-media">
                 <!--                    <img src="../images/logo.png" />-->
@@ -800,7 +816,7 @@
         </div>
 
 
-        <a v-if="show" :class="writeAnimate" @click="toWrite">
+        <a v-show="show" :class="writeAnimate" @click="toWrite">
             <span class="bbb">
                <i class="layui-icon layui-icon-edit"
                   style="position: relative;top: 8px; font-size: 30px; color: white;"></i>
@@ -809,24 +825,42 @@
 
     </div>
     <div id="right">
-        <div class="mui-card">
-            <div class="mui-card-header">{{newsTitle}}</div>
-            <div class="mui-card-content">
+        <div class="mui-card" style="background-color: transparent;box-shadow: none;margin:20px 10px;">
+            <div class="mui-card-header" style="font-size: 4vw;">
+                <h5>{{newsTitle}}</h5>
+            </div>
+            <div class="mui-card-content" style="border-top: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;">
                 <div class="mui-card-content-inner">
                     <div class="mui-input-row" style="margin: 10px 5px;">
-                        <textarea id="textarea" rows="5" placeholder="请输入评论" v-model="form.comment"></textarea>
+                        <textarea style="background-color: transparent; border: none;" id="textarea" rows="5" @input="inwrite" placeholder="请输入评论" v-model="form.comment"></textarea>
                     </div>
                 </div>
             </div>
-            <div class="mui-card-footer">
-                <button @click="submit" type="button" class="mui-btn mui-btn-primary">
-                    提交
+            <div class="mui-card-footer" style="margin-top: 20px;">
+                <a> </a>
+                <button style="width: 40vw;" @click="submit" type="button" :class="SubmitBottonClass">
+                    发表评论
                 </button>
-                <button @click="goback" type="button" class="mui-btn mui-btn-danger">
-                    返回
-                </button>
+                <!--                <button @click="goback" type="button" class="mui-btn mui-btn-danger">-->
+                <!--                    返回-->
+                <!--                </button>-->
+                <a> </a>
             </div>
         </div>
+        <nav v-show="navShow" class="mui-bar mui-bar-tab">
+            <div class="mui-tab-item" @click="goback">
+                <span class="mui-tab-label">
+                    <i class="layui-icon layui-icon-left" style="color: #5B5B5B;"></i>
+                </span>
+            </div>
+            <div class="mui-tab-item" >
+                <span class="mui-tab-label">
+                    <i class="layui-icon layui-icon-right" style="color:#E0E0E0;"></i>
+                </span>
+            </div>
+        </nav>
+
+
     </div>
 </div>
 
@@ -858,17 +892,23 @@
     const app = new Vue({
         el: "#app",
         data: {
-            classStyle: {
+            classStyle: {//点赞的class
                 "heart": true,
                 "heartAnimation": false,
                 rel: "like"
             },
-            writeAnimate: {
-                "animated ":true,
+            writeAnimate: {//写评论的悬浮按钮的class
+                "animated ": true,
                 "write": true,
                 "bounceOutLeft": true,
                 "bounceInLeft": false,
 
+            },
+            SubmitBottonClass: {
+                "mui-btn": true,
+                // "mui-btn-primary": true,
+                "no": true,
+                "yes": false
             },
             newsTitle: "新闻标题",
             newsTime: "2016-09-07 12:23:45",
@@ -877,6 +917,7 @@
             Count: 10,//点赞数量
             isClick: false,//是否被点击
             show: false,//是否显示点赞头
+            navShow:false,//下方导航栏是否显示
             islock: false,//锁住数字
             comentTitleStyle: "color: #8f8f94;",
             commentItemStyle: "color: black;width:100%;word-wrap: break-word;word-break: break-all;overflow: hidden;white-space:normal;",
@@ -884,151 +925,151 @@
                 {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
                 , {
                     time: "2016-09-07 12:23:45",
                     userName: "华吉锋",//用户名
-                    userTouxiang: "./images/muwu.jpg",//用户头像
+                    userTouxiang: "../images/muwu.jpg",//用户头像
                     comment: "好的撒刁是的撒后我挥洒的挥洒ID号撒旦画撒旦画大萨达横扫hi的撒后的撒后ID后is啊11撒旦哈师大活塞环的啥的撒低耦合"//用户评论
                 }
                 , {
                     time: "2016-09-06 18:23:45",
                     userName: "张三",//用户名
-                    userTouxiang: "./images/shuijiao.jpg",//用户头像
+                    userTouxiang: "../images/shuijiao.jpg",//用户头像
                     comment: "不好"//用户评论
                 }
                 , {
                     time: "2016-09-02 09:23:45",
                     userName: "李四",//用户名
-                    userTouxiang: "./images/yuantiao.jpg",//用户头像
+                    userTouxiang: "../images/yuantiao.jpg",//用户头像
                     comment: "ok"//用户评论
                 }
 
             ]
             , form: {//表单提交
-                comment: "123123213213213",
+                comment: "",
             }
         }
         , methods: {
@@ -1040,24 +1081,46 @@
 
                 $("#left").animate({right: "100%"}, function () {
                     $("#left").hide();
+                    app.navShow = true;
                 });
             }
             , goback: () => {//返回新闻详情
                 $("#left").show();
+                app.navShow = false;
                 $("#right").animate({left: "100%"});
 
                 $("#left").animate({right: "0"}, function () {
                     go($(".mui-table-view"));
                 });
             }
+            , inwrite: () => {
+                let val = app.form.comment;
+                if (val != "" && val != null) {
+                    app.SubmitBottonClass["no"] = false;
+                    app.SubmitBottonClass["yes"] = true;
+                } else {
+                    app.SubmitBottonClass["no"] = true;
+                    app.SubmitBottonClass["yes"] = false;
+                }
+            }
             , submit: () => {//提交
-                let value = app.form.comment;
-                // console.log("获得的值为--",value);
+
+                if (app.SubmitBottonClass["yes"]) {
+                    let value = app.form.comment;
+                    console.log("获得的值为--", value);
+                }
             }
         }
     })
 
     $(() => {
+
+
+        //每两秒修正一下元素的高度
+        setInterval(() => {
+            app.commentHight = $(".mui-card-footer").offset().top;
+        }, 2 * 1000);
+
 
         // $(".write").hide();
 
@@ -1115,8 +1178,8 @@
             // app.show =;
             if (!app.islock) {
                 // $(".write").show();
-                app.show =true;
-                app.islock=true;
+                app.show = true;
+                app.islock = true;
                 app.writeAnimate["bounceInLeft"] = true;
                 app.writeAnimate["bounceOutLeft"] = false;
 
@@ -1131,7 +1194,7 @@
             // app.show = false;
             if (app.islock) {
                 // app.show = false;
-                app.islock=false;
+                app.islock = false;
                 app.writeAnimate["bounceInLeft"] = false;
                 app.writeAnimate["bounceOutLeft"] = true;
             }
