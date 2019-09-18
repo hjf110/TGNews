@@ -380,47 +380,30 @@ var ImageajaxSubmit = function (base64url, url, type, method, imgName, isasync) 
 
 
 //通用接口
-var ajaxSubmit = function (submitData, url, type, method, headType, istoken, isasync, ismsg) {
+var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
     var data;
     var headers = {};
-    let asc = true;
 
-
-    if (ismsg == false) {
-        asc = false;
-    }
-    ;
     // headers["Access-Control-Allow-Origin"] = "*";
-    headers["KJCY-TOKEN"] = sessionStorage.getItem('token');
-    let aac = sessionStorage.getItem('subtoken');
-    if (aac != "null" && sessionStorage.getItem('subtoken') != null && sessionStorage.getItem('subtoken') != "" && sessionStorage.getItem('subtoken') != undefined) {
-        headers["KJCY-SUBTOKEN"] = sessionStorage.getItem('subtoken');
-    }
+    headers["token"] = sessionStorage.getItem('token');
     // console.log(sessionStorage.getItem('token'));
     var async_is = true;
     if (type != "GET") {
+        headers["Content-Type"] = "application/json";
         data = JSON.stringify(submitData);
     } else {
         data = submitData;
     }
-    if (headType == "json") {
-        headers["Content-Type"] = "application/json";
-    }
 
-    if (istoken == true) {
-        // console.log("token头信息--------", $.cookie("token"));
-        headers["KJCY-TOKEN"] = sessionStorage.getItem('token');
-    }
     if (isasync == false) {
         async_is == false;
     }
 
 
-    if (asc) {
-        console.log("url为:", url);
-        console.log("值为:", data);
-        console.log("头信息为", headers);
-    }
+    console.log("url为:", url);
+    console.log("值为:", data);
+    console.log("头信息为", headers);
+
 
     jQuery.ajax({
         url: url,
@@ -433,20 +416,17 @@ var ajaxSubmit = function (submitData, url, type, method, headType, istoken, isa
         async: async_is, //异步
         // cache: false, //不缓存
         success: function (res) {
-            if (asc) {
-                console.log("" + url, res);
-            }
-            // console.log(11111111111111111111);
-            if (res.code == "0") {
+            console.log(res);
+            if (res.success) {
                 method(res);
             } else {
-                alert(res.msg);
-                // method(data);
+                // alert(res.msg);
+                error(res.msg);
             }
-            //method(data);
         },
         error: function (XMLHttpResponse, textStatus, errorThrown) {
-            alert("网络错误");
+            error("网络错误");
+            // alert("网络错误");
             console.log("1 异步调用返回失败,XMLHttpResponse.readyState:" + XMLHttpResponse.readyState);
             console.log("2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status);
             console.log("3 异步调用返回失败,textStatus:" + textStatus);
@@ -1156,9 +1136,6 @@ const smallTobig = (str) => {
     }
     return a;
 };
-
-
-
 
 
 //  使用方法

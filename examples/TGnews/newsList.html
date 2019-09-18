@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="../../css/app.css">
 
     <style>
+        * {
+            touch-action: pan-y;
+        }
+
         .mui-card-header {
             height: 50vw;
         }
@@ -29,138 +33,287 @@
         .info-item {
             margin-top: 30px;
         }
-        .bottom-foot{
+
+        .bottom-foot {
             /*margin-bottom: 10px;*/
             text-align: center;
             height: 50px;
             line-height: 50px;
         }
+
+        .mui-bar-tab {
+            bottom: -1px;
+        }
+
+        .mui-bar-tab {
+            height: 7vh;
+        }
+
+        .mui-popover {
+            width: 120px;
+        }
+
+        .mui-table-view-cell {
+            text-align: right;
+        }
+
+        .mui-bar {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .ww {
+            height: 93vh;
+            overflow: auto;
+            display: inline-block;
+        }
     </style>
     <link rel="stylesheet" href="../../js/layuiadmin/layui/css/layui.css">
 
+
 </head>
 <body>
-<div id="info" class="mui-content">
-
-    <div class="info-item" v-for="(item,idx) in list">
-        <div class="info-item-time">{{item.newsTime}}</div>
-        <div class="mui-card">
-            <div class="mui-card-header mui-card-media" :style="item.indexImg">
-                <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
-            </div>
-            <div class="mui-card-content">
-                <div class="mui-card-content-inner">
-                    <p>{{item.newsTime}}</p>
-                    <p style="color: #333;">{{item.remark}}</p>
+<div id="info">
+    <div class="mui-content" v-if="islogin">
+        <div id="box">
+            <div class="info-item" v-for="(item,idx) in list">
+                <div class="info-item-time">{{item.newsTime}}</div>
+                <div class="mui-card">
+                    <div class="mui-card-header mui-card-media" :style="item.indexImg">
+                        <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
+                    </div>
+                    <div class="mui-card-content">
+                        <div class="mui-card-content-inner">
+                            <p>{{item.newsTime}}</p>
+                            <p style="color: #333;">{{item.remark}}</p>
+                        </div>
+                    </div>
+                    <div class="mui-card-footer"  @click="toherf(item.id)">
+                        <div class="mui-card-link">详情</div>
+                        <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+                    </div>
                 </div>
             </div>
-            <div class="mui-card-footer" :data-id="item.id" @click="toherf($event)">
-                <div class="mui-card-link">详情</div>
-                <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+
+            <div v-if="have" class="bottom-foot"><i
+                    class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}
             </div>
+            <div v-else class="bottom-foot">{{loading.finish}}</div>
+
         </div>
+
+        <nav id="foot" class="mui-bar mui-bar-tab hide">
+            <a class="mui-tab-item" href="#Popover_0">新人必点</a>
+            <a class="mui-tab-item" href="#Popover_1">学院指南</a>
+            <a class="mui-tab-item">学习平台</a>
+            <a class="mui-tab-item">学院动态</a>
+        </nav>
+        <div id="Popover_0" class="mui-popover mui-bar-popover">
+            <div class="mui-popover-arrow"></div>
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell"><a href="#">高管认知</a>
+                </li>
+                <li class="mui-table-view-cell"><a href="#">分店介绍</a>
+                </li>
+            </ul>
+        </div>
+        <div id="Popover_1" class="mui-popover mui-bar-popover">
+            <div class="mui-popover-arrow"></div>
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell"><a href="#">学院简介</a>
+                </li>
+                <li class="mui-table-view-cell"><a href="#">师资团队</a>
+                </li>
+                <li class="mui-table-view-cell"><a href="#">培训制度</a>
+                </li>
+            </ul>
+        </div>
+        <div id="Popover_2" class="mui-popover mui-bar-popover">
+            <div class="mui-popover-arrow"></div>
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell"><a href="#">公司新闻</a>
+                </li>
+                <li class="mui-table-view-cell"><a href="#">行业新闻</a>
+                </li>
+            </ul>
+        </div>
+
+
     </div>
 
-    <div v-if="have" class="bottom-foot" ><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}</div>
-    <div v-else  class="bottom-foot" >{{loading.finish}}</div>
-
-
-
-
-
-
-
+    <div v-else>
+        {{errorMsg}}
+    </div>
 </div>
 </body>
 <script src="../../js/jquery-1.12.4.js"></script>
 <script src="../../dist/js/mui.min.js"></script>
 <script src="../../js/jquery.cookie.js"></script>
 <script src="../../js/vue-2-6-10.js"></script>
+<script src="../../js/common/api.js"></script>
+<script src="../../js/common/localjs.js"></script>
+<script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.7.13/dingtalk.open.js"></script>
 <script>
-    let app = new Vue({
-        el: "#info",
-        data: {
-            page: 1,//页数
-            limit: 10,//每页显示多少条数据
-            have:true,//下一页是否有数据
-            islock:true,//是否锁住
-            loading:{
-                loadingTitle:"加载中",//加载中显示的文本,
-                finish:"没有更多了",//没有更多数据显示的文本
+    let newsType;
+    // dd.ready(function () {
+
+        let app = new Vue({
+            el: "#info",
+            data: {
+                islogin: true,
+                errorMsg: "",//错误信息
+                page: 1,//页数
+                limit: 10,//每页显示多少条数据
+                newsType: "",//微应用类型
+                have: true,//下一页是否有数据
+                islock: true,//是否锁住
+                boxClass: {
+                    "ww": false
+                },
+                loading: {
+                    loadingTitle: "加载中",//加载中显示的文本,
+                    finish: "没有更多了",//没有更多数据显示的文本
+                },
+                list: [
+
+                ]
             },
-            list: [
-                {
-                    newsTime: "2019-09-08 12:30:23",//新闻时间
-                    indexImg: "background-image:url(../images/muwu.jpg)",//新闻图片
-                    title: "天港新闻",//新闻标题
-                    remark: "新闻摘要",//新闻摘要
-                    id: "12"//新闻详情页跳转的id
-                },
-                {
-                    newsTime: "2019-09-08 12:30:23",//新闻时间
-                    indexImg: "background-image:url(../images/shuijiao.jpg)",//新闻图片
-                    title: "天港新闻",//新闻标题
-                    remark: "新闻摘要",//新闻摘要
-                    id: "12"//新闻详情页跳转的id
-                },
-                {
-                    newsTime: "2019-09-08 12:30:23",//新闻时间
-                    indexImg: "background-image:url(../images/yuantiao.jpg)",//新闻图片
-                    title: "天港新闻",//新闻标题
-                    remark: "新闻摘要",//新闻摘要
-                    id: "12"//新闻详情页跳转的id
+            mounted: () => {
+
+            },
+            methods: {
+                toherf(event) {//点击跳转
+
+
+                    console.log(event);
+                    // window.location.href = "newsinfo.html";
                 }
-            ]
-        },
-        methods: {
-            toherf(event) {//点击跳转
-                let _this = $(event.target);
-                let id = _this.data("id");
-                console.log(id);
-                window.location.href = "http://www.baidu.com";
             }
-        }
 
-    });
-
+        });
 
 
+        const loginIn = () => {
+            dd.runtime.permission.requestAuthCode({
+                corpId: Api.corpId, // 企业id
+                onSuccess: function (info) {
+                    alert(JSON.stringify(info));
+                    let code = info.code;// 通过该免登授权码可以获取用户身份
+                    ajaxSubmit({code: code}, Api.Login.ing, "GET", (e) => {
+                        app.islogin = true;
+                        let aa = e.data;
+                        //存入用户信息
+                        localStorage.setItem("token", aa.token);
+                        localStorage.setItem("userId", aa.id);
+                        localStorage.setItem("userName", aa.name);
+                        localStorage.setItem("userIcon", aa.icon);
+
+                    }, (err) => {
+                        app.islogin = false;
+                        app.errorMsg = err;
+                    });
+                },
+                onFail: function (err) {
+                    alert(JSON.stringify(err));
+                    // console.log(err);
+                }
+            });
+
+        };
 
 
-
-
-    $(window).scroll(function(){
-         // console.log($(window).scrollTop() + $(window).height()-$(document).height());
-        let i= $(window).scrollTop() + $(window).height()-$(document).height();
-        if (i==0||i==0.5) {//页面滚动到了底部
-
-
-            if(app.have&&app.islock){//如果不是最后一页
+        //获得下一页
+        const getList = () => {
+            // console.log("进来了");
+            if (app.have && app.islock) {//如果不是最后一页
                 app.islock = false;//锁住
                 console.log("发送下一页请求-----");
 
                 let page = app.page;
                 let limit = app.limit;
 
-                setTimeout(function () {
-                    app.islock=true;//开锁,,请求成功后就开锁
-                    app.list.push( {
-                        newsTime: "2019-09-08 12:30:23",//新闻时间
-                        indexImg: "background-image:url(../images/muwu.jpg)",//新闻图片
-                        title: "天港新闻",//新闻标题
-                        remark: "新闻摘要",//新闻摘要
-                        id: "12"//新闻详情页跳转的id
-                    });
-                },10*1000);
+                ajaxSubmit({page: page,limit:limit,channelId:app.newsType}, Api.Article.list, "GET", (e) => {
+                    app.islock = true;//开锁,,请求成功后就开锁
+                    let aa = e.data;
+                    if (aa.length > 0) {
+                        $.each(aa, (idx,obj) => {
+                            let item = {};
+                            item.newsTime = updateTime(2);
+                            // item.indexImg = "background-image:url(" + baseURL + obj.showPic + ")";
+                            item.indexImg="background-image:url(../images/muwu.jpg)",//新闻图片
+                            item.title = obj.title;
+                            item.remark = obj.marks;
+                            item.id = obj.id;
+
+                            app.list.push(item);
+                        });
+                        app.page = page+1;
+                        app.have = true;
+                    }else {
+                        app.have = false;
+                    }
+
+                },(err)=>{
+                    console.log(err);
+                });
 
 
-             }
+            }
+        };
+
+
+        //登录
+        // let token = localStorage.getItem("token");
+        // if (token == "" || token == null || token == undefined) {
+        //     loginIn();
+        // } else {
+        //     app.islogin = true;
+        // }
+
+
+        // newsType = GetQueryString("type");
+        newsType = 2;
+
+        app.newsType = newsType;
+        // console.log(this);
+        if (newsType == 3) {//说明是管理学院进入
+            $("#box").css({"height": "93vh", "overflow": "auto"});
+            $("#foot").show();
+        }
+
+
+        getList();//获取列表详情
+
+
+        if (newsType != 3) {//没有导航栏的页面
+            $(window).scroll(function () {
+                // console.log($(window).scrollTop() + $(window).height()-$(document).height());
+                let i = $(window).scrollTop() + $(window).height() - $(document).height();
+                // console.log(i);
+                if (i == 0 || i == 0.5 || i == -1) {//页面滚动到了底部
+                    getList();
+                }else{
+                    app.have = true;
+                }
+            });
+        } else {//有导航栏的页面
+            var nScrollHight = 0; //滚动距离总长(注意不是滚动条的长度)
+            var nScrollTop = 0;   //滚动到的当前位置
+            var nDivHight = $("#box").height();
+            $("#box").scroll(function () {
+                nScrollHight = $(this)[0].scrollHeight;
+                nScrollTop = $(this)[0].scrollTop;
+                if (nScrollTop + nDivHight >= nScrollHight) {
+                    console.log("滚动到了底部");
+                    getList();
+                }
+
+            });
 
         }
-    });
 
 
-
+    // });
 
 </script>
 
