@@ -61,6 +61,33 @@ var pass = "Qyw6tX4f";// 8位随机签名加密码
 })(jQuery);
 
 
+
+//警告弹窗--使用layer移动版弹窗
+const warningAlert = (msg,close)=>{
+    let is = false;
+    if(close==true){
+        is = true;
+    }
+    //自定义标题风格
+    layer.open({
+        title: [
+            '错误',
+            'background-color: #FF4351; color:#fff;'
+        ]
+        ,content: msg
+        ,anim:"up"
+        ,shade: 'background-color: rgba(0,0,0,0.7)'
+        ,shadeClose:is
+
+    });
+};
+
+
+
+
+
+
+
 /*跳转到某一元素*/
 function gotoItem(item) {
     var scroll_offset = $(item).offset(); //得到box这个div层的offset，包含两个值，top和left
@@ -383,7 +410,6 @@ var ImageajaxSubmit = function (base64url, url, type, method, imgName, isasync) 
 var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
     var data;
     var headers = {};
-
     // headers["Access-Control-Allow-Origin"] = "*";
     headers["token"] = sessionStorage.getItem('token');
     // console.log(sessionStorage.getItem('token'));
@@ -394,17 +420,12 @@ var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
     } else {
         data = submitData;
     }
-
     if (isasync == false) {
         async_is == false;
     }
-
-
     console.log("url为:", url);
     console.log("值为:", data);
     console.log("头信息为", headers);
-
-
     jQuery.ajax({
         url: url,
         data: data,
@@ -420,12 +441,14 @@ var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
             if (res.success) {
                 method(res);
             } else {
-                // alert(res.msg);
-                error(res.msg);
+                error(res.message);
+                //layer.msg(res.msg, {icon: 2, time: 0, shade: 0.7});
+                warningAlert(res.message,true);
             }
         },
         error: function (XMLHttpResponse, textStatus, errorThrown) {
             error("网络错误");
+            warningAlert("网络错误",true);
             // alert("网络错误");
             console.log("1 异步调用返回失败,XMLHttpResponse.readyState:" + XMLHttpResponse.readyState);
             console.log("2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status);
@@ -436,6 +459,7 @@ var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
 };
 
 var postAjaxFile = function (submitData, submitUrl, method) {
+
     jQuery.ajax({
         url: submitUrl,
         data: submitData, //FormData对象
@@ -547,7 +571,16 @@ function JsonUnique(list, id) {
 
 
 function timestampToTime(timestamp) {
-    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    let i;
+    let is = timestamp+"";
+    if(is.length==13){
+        i = 1;
+    }else if(is.length==10){
+        i = 1000;
+    }else{
+        i=1;
+    }
+    var date = new Date(timestamp * i);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
     Y = date.getFullYear() + '-';
     M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
     D = date.getDate() + ' ';
@@ -920,7 +953,6 @@ function getMyDate(str, type) {
             oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay);
             break;
     }
-
     return oTime;
 };
 

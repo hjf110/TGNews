@@ -108,25 +108,25 @@
             <a class="mui-tab-item" href="#Popover_0">新人必点</a>
             <a class="mui-tab-item" href="#Popover_1">学院指南</a>
             <a class="mui-tab-item">学习平台</a>
-            <a class="mui-tab-item" href="newsList_item.html?type=25">学院动态</a>
+            <a class="mui-tab-item">学院动态</a>
         </nav>
         <div id="Popover_0" class="mui-popover mui-bar-popover">
             <div class="mui-popover-arrow"></div>
             <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=20">高管认知</a>
+                <li class="mui-table-view-cell"><a href="#">高管认知</a>
                 </li>
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=21">分店介绍</a>
+                <li class="mui-table-view-cell"><a href="#">分店介绍</a>
                 </li>
             </ul>
         </div>
         <div id="Popover_1" class="mui-popover mui-bar-popover">
             <div class="mui-popover-arrow"></div>
             <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=22">学院简介</a>
+                <li class="mui-table-view-cell"><a href="#">学院简介</a>
                 </li>
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=23">师资团队</a>
+                <li class="mui-table-view-cell"><a href="#">师资团队</a>
                 </li>
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=24">培训制度</a>
+                <li class="mui-table-view-cell"><a href="#">培训制度</a>
                 </li>
             </ul>
         </div>
@@ -157,6 +157,9 @@
 <script src="../../js/common/localjs.js"></script>
 <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.7.13/dingtalk.open.js"></script>
 <script>
+
+
+    // layer.msg("ceshi", {icon: 2, time: 0, shade: 0.7});
     let newsType;
     dd.ready(function () {
         let app = new Vue({
@@ -211,7 +214,6 @@
                         localStorage.setItem("userIcon", aa.icon);
 
                     }, (err) => {
-
                         app.islogin = false;
                         app.errorMsg = err;
                     });
@@ -264,6 +266,7 @@
             }
         };
 
+
         // loginIn();
         //登录
         let token = localStorage.getItem("userId");
@@ -279,7 +282,7 @@
 
         app.newsType = newsType;
         // console.log(this);
-        if (newsType == 5) {//说明是管理学院进入
+        if (newsType == 3) {//说明是管理学院进入
             $("#box").css({"height": "93vh", "overflow": "auto"});
             $("#foot").show();
         }

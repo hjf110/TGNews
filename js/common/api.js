@@ -5,6 +5,7 @@
 
 // //测试环境
 var baseURL = "http://dd.ubertech.cn:8080/";
+// var baseURL_file = "http://dd.ubertech.cn:8082/";
 
 
 //接口地址和全局变量和log管理
@@ -16,10 +17,10 @@ var Api = {
     },
     Article:{
         list:baseURL+"showBlog/getArticleDirective",//文章列表
-        info:baseURL+"showBlog/articleContent",//获取文章详情
-        CommentList:baseURL+"showBolg/articleCommentList",//获取评论列表
-        saveComment:baseURL+"showBlog/saveComment",//保存评论
-        like:baseURL+"showBlog/articleLike",//点赞和取消
+        info:baseURL+"showBlog/getArticleContent",//获取文章详情
+        CommentList:baseURL+"showBlog/articleCommentList",//获取评论列表
+        saveComment:baseURL+"showBlog/addComment",//保存评论
+        like:baseURL+"showBlog/articleIns",//点赞和取消
         likeList:baseURL+"showBlog/getLikeList",//获取点赞列表用于判断用户是否点赞了
     }
 };
