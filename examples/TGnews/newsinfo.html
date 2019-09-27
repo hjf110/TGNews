@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>新闻详情</title>
+    <title id="name"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -11,7 +11,15 @@
     <link rel="stylesheet" href="../../css/animate-v3-1-0.css">
     <link rel="stylesheet" href="../../js/layuiadmin/layui/css/layui.css">
     <link rel="stylesheet" href="../../js/layer.mobile-v2.0/layer_mobile/need/layer.css">
+    <link rel="stylesheet" href="../../dist/wu-ui/wu-ui.css">
+    <link rel="stylesheet" href="../../dist/wu-ui/iconfont.css">
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/vue-2-6-10.js"></script>
     <style>
+        [v-cloak] {
+            display: none;
+        }
+
         .mui-table-view .mui-media-object {
             line-height: 30px;
             max-width: 30px;
@@ -128,10 +136,10 @@
     </style>
 
 
-
 </head>
 <body style=" background-color: #FFFFFF;">
-<div id="app" class="mui-content" style=" background-color: #FFFFFF;">
+
+<div id="app" class="mui-content" style=" background-color: #FFFFFF;" v-cloak>
 
 
     <!--    <header class="mui-bar mui-bar-nav" v-if="show" style="background: white;">-->
@@ -145,12 +153,12 @@
 
 
     <div id="left">
-        <div class="mui-card">
+        <div class="mui-card" v-show="isShow">
             <div class="mui-card-header mui-card-media">
                 <!--                    <img src="../images/logo.png" />-->
                 <!--                    <div class="mui-media-body">-->
-                <h3>{{newsTitle}}</h3>
-                <p>发表于 {{newsTime}}</p>
+                <h3 v-html="newsTitle"></h3>
+                <p>发表于<span v-html="newsTime"></span></p>
                 <!--                    </div>-->
                 <!--<img class="mui-pull-left" src="../images/logo.png" width="34px" height="34px" />
                 <h2>小M</h2>
@@ -160,11 +168,25 @@
 
             </div>
             <div class="mui-card-footer">
+                <!--                    <a style="color: #5B6A91;" class="mui-card-link" ></a>-->
                 <a class="mui-card-link">
-                    <div :class="classStyle" data-id="like2" :rel="classStyle.rel"></div>
-                    <div class="likeCount" data-id="likeCount2">{{Count}}</div>
+                    <!--                        <div :class="classStyle" data-id="like2" :rel="classStyle.rel"></div>-->
+                    <!--                        <div class="likeCount" data-id="likeCount2" v-html="Count"></div>-->
+                    <span style="position: absolute;top: -4px;left: 10px;height: 100%;width: 200px">
+
+                           <img @click="toLike(Like.type,form.articleId)" style="width: 20px;"
+                                :src="Like.icon">
+                            <span style="font-size: 18px;position: relative;top: 4px;color:#636F8F">{{Like.count}}</span>
+                        </span>
                 </a>
-                <a style="color: #5B6A91;" class="mui-card-link" @click="toWrite">写评论</a>
+                <a class="mui-card-link"><span style="color:#C7C7C7">阅读量&nbsp;{{LookNumber}}</span></a>
+
+
+            </div>
+            <div class="mui-card-footer" style="background:rgb(242, 242, 242); ">
+                <!--                    <a style="color: #5B6A91;" class="mui-card-link" ></a>-->
+                <a style="color: #C7C7C7;" class="mui-card-link">全部评论</a>
+                <a style="color: #636F8F;" class="mui-card-link" @click="toWrite">写评论</a>
 
 
             </div>
@@ -175,8 +197,11 @@
                             <img style="border-radius: 2px;" class="mui-media-object mui-pull-left"
                                  :src="item.userTouxiang">
                             <div class="mui-media-body" :style="comentTitleStyle">
-                                {{item.userName}}<span
-                                    style="position: absolute;top: 10px;right: 0px;">{{item.time}}</span>
+                                {{item.userName}}
+                                <span style="position: absolute;top: 10px;right: 0px;"><img
+                                        @click="dinzan_2(idx,item.type,item.id)" style="width: 20px;"
+                                        :src="item.icon">&nbsp;<span
+                                        style="font-size: 18px;position: relative;top: 4px;color:#636F8F">{{item.count}}</span></span>
                                 <div :style="commentItemStyle" v-html="item.comment"></div>
                             </div>
                         </a>
@@ -242,313 +267,460 @@
 
 </body>
 
-<script src="../../js/jquery-1.12.4.js"></script>
 <script src="../../js/layer.mobile-v2.0/layer_mobile/layer.js"></script>
 <script src="../../dist/js/mui.min.js"></script>
 <script src="../../js/jquery.cookie.js"></script>
-<script src="../../js/vue-2-6-10.js"></script>
+
 <script src="../../js/common/api.js"></script>
 <script src="../../js/common/localjs.js"></script>
+<script src="../../dist/wu-ui/wu-ui.js"></script>
+<script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.7.13/dingtalk.open.js"></script>
 
 
 <script>
-    const go = (item) => {
-        // console.log(gotoThis);
-        setTimeout(function () {
-            let scroll_offset = item.offset(); //得到box这个div层的offset，包含两个值，top和left
+    dd.ready(function () {
+        const go = (item) => {
+            // console.log(gotoThis);
+            setTimeout(function () {
+                let scroll_offset = item.offset(); //得到box这个div层的offset，包含两个值，top和left
 
-            $("body,html").animate({
-                scrollTop: scroll_offset.top //让body的scrollTop等于pos的top，就实现了滚动
-            });
+                $("body,html").animate({
+                    scrollTop: scroll_offset.top //让body的scrollTop等于pos的top，就实现了滚动
+                });
 
-            console.log(scroll_offset.top);
-
-
-        }, 1);
-
-    }
+                console.log(scroll_offset.top);
 
 
-    const app = new Vue({
-        el: "#app",
-        data: {
-            classStyle: {//点赞的class
-                "heart": true,
-                "heartAnimation": false,
-                rel: "like"
-            },
-            writeAnimate: {//写评论的悬浮按钮的class
-                "animated ": true,
-                "write": true,
-                "bounceOutLeft": true,
-                "bounceInLeft": false,
+            }, 1);
 
-            },
-            SubmitBottonClass: {
-                "mui-btn": true,
-                // "mui-btn-primary": true,
-                "no": true,
-                "yes": false
-            },
-            newsTitle: "",//新闻标题
-            newsTime: "",//新闻时间
-            info: "",//新闻详情
-            //是否有评论
-            iscommentList: false,//默认没有
-            iscommentList_no_text: "暂无评论",//没有评论时显示的文字
-            //如果用户没有头像,显示默认头像
-            NoIcon:"../images/noicon.png",
-            //如果是未知用户
-            NoName:"未知用户",
-
-            footStyle: "background: #F2F2F2;",
-            commentHight: $(".mui-card-footer").offset().top,//留言板标签的高度
-            Count: 0,//点赞数量
-            isClick: false,//是否被点击
-            show: false,//是否显示点赞头
-            navShow: false,//下方导航栏是否显示
-            islock: false,//锁住数字
-            comentTitleStyle: "color: #888888;",
-            commentItemStyle: "color: #333333;width:100%;word-wrap: break-word;word-break: break-all;overflow: hidden;white-space:normal;",
-            commentList: []
-            , form: {//表单提交
-                comment: "",
-                articleId: "",//文章的id
-                channelId: ""//栏目的id
-            }
         }
-        , methods: {
-            //根据id获取新闻详情
-            getInfo: () => {
-                ajaxSubmit({articleId: app.form.articleId}, Api.Article.info, "GET", (res) => {
-                    let aa = res.data;
-                    app.newsTitle = aa.title;//赋值标题
-                    app.newsTime = timestampToTime(aa.createDate);//新闻发表时间
-                    app.info = aa.content;//新闻内容
 
 
+        const app = new Vue({
+            el: "#app",
+            data: {
+                classStyle: {//点赞的class
+                    "heart": true,
+                    "heartAnimation": false,
+                    rel: "like"
+                },
+                writeAnimate: {//写评论的悬浮按钮的class
+                    "animated ": true,
+                    "write": true,
+                    "bounceOutLeft": true,
+                    "bounceInLeft": false,
+
+                },
+                SubmitBottonClass: {
+                    "mui-btn": true,
+                    // "mui-btn-primary": true,
+                    "no": true,
+                    "yes": false
+                },
+                isShow: false,
+                newsTitle: "",//新闻标题
+                newsTime: "",//新闻时间
+                info: "",//新闻详情
+                LookNumber: 0,//新闻阅读量
+                //是否有评论
+                iscommentList: false,//默认没有
+                iscommentList_no_text: "暂无评论",//没有评论时显示的文字
+                No_icon: "../images/dianzNo.png",
+                Yes_icon: "../images/dianzYes.png",
+
+                Like: {
+                    icon: "",
+                    type: false,
+                    count: 0
+                },
 
 
+                //如果用户没有头像,显示默认头像
+                NoIcon: "../images/noicon.png",
+                //如果是未知用户
+                NoName: "未知用户",
 
-                }, (err) => {
-                    console.log(err);
-                });
-            }
-            //根据id获取评论列表
-            , getcommentList: () => {
-                ajaxSubmit(null, Api.Article.CommentList + "?page=1&limit=999999&articleId=" + app.form.articleId + "&type=1", "POST", (res) => {
-                    let aa = res.data.records;//评论列表
-                    if (aa.length > 0) {//如果有评论
-                        app.commentList = [];
-                        app.iscommentList = true;
-                        $.each(aa, (idx, obj) => {
-                            let icon;
-                            let userName;
-                            if (obj.updateUser != undefined) {
-                                icon = obj.updateUser.icon;
-                                if (icon == "" || icon == null || icon == undefined) {
-                                    icon = app.NoIcon;
-                                }
-                                userName=obj.updateUser.loginName;
-                            }else{
-                                icon = app.NoIcon;
-                                userName = app.NoName;
-                            }
-
-                            app.commentList.push({
-                                time: timestampToTime(obj.createDate),
-                                userName:userName ,//用户名
-                                userTouxiang: icon,//用户头像
-                                comment: obj.content//用户评论
-                            })
-
-                        });
-                    }
-
-                }, (err) => {
-                    console.log(err);
-                });
-            }
-            //根据id获取点赞列表
-            , getLikeList: () => {
-                ajaxSubmit({articleId: app.form.articleId}, Api.Article.likeList, "GET", (res) => {
-                    let aa = res.data;
-                    let userid = localStorage.getItem("userId");
-                    app.Count = aa.length;//点赞数数量
-                    $.each(aa, (idx, obj) => {
-                        if (obj.createId == userid) {
-                            app.classStyle["heartAnimation"] = true;
-                            app.classStyle.rel = "unlike";
-                            // $(this).addClass("heartAnimation").attr("rel", "unlike");
-                            app.isClick = true;//被点击了
-                        }
-                    });
-
-                }, (err) => {
-                    console.log(err);
-                });
-            }
-            //根据id来点赞和取消点赞
-            , articleLike: () => {
-                ajaxSubmit({articleId: app.form.articleId,userId:localStorage.getItem("userId")}, Api.Article.like, "GET", (res) => {
-
-                }, (err) => {
-                    console.log(err);
-                });
-            }
-
-            , toWrite: () => { //显示留言板
-                app.show = false;
-                console.log(app.commentHight);
-                console.log("获得的值为--", this);
-                $("#right").animate({left: "0"});
-
-                $("#left").animate({right: "100%"}, function () {
-                    $("#left").hide();
-                    app.navShow = true;
-                });
-            }
-            , goback: () => {//返回新闻详情
-                $("#left").show();
-                app.navShow = false;
-                $("#right").animate({left: "100%"});
-
-                $("#left").animate({right: "0"}, function () {
-                    go($(".mui-table-view"));
-                });
-            }
-            , inwrite: () => {
-                let val = app.form.comment;
-                if (val != "" && val != null) {
-                    app.SubmitBottonClass["no"] = false;
-                    app.SubmitBottonClass["yes"] = true;
-                } else {
-                    app.SubmitBottonClass["no"] = true;
-                    app.SubmitBottonClass["yes"] = false;
+                footStyle: "background: #F2F2F2;",
+                commentHight: $(".mui-card-footer").offset().top,//留言板标签的高度
+                Count: 0,//点赞数量
+                isClick: false,//是否被点击
+                show: false,//是否显示点赞头
+                navShow: false,//下方导航栏是否显示
+                islock: false,//锁住数字
+                comentTitleStyle: "color: #888888;",
+                commentItemStyle: "color: #333333;width:100%;word-wrap: break-word;word-break: break-all;overflow: hidden;white-space:normal;",
+                commentList: []
+                , form: {//表单提交
+                    comment: "",
+                    articleId: "",//文章的id
+                    channelId: ""//栏目的id
                 }
             }
-            , submit: () => {//提交
+            , methods: {
+                //根据id获取新闻详情
+                getInfo: () => {
+                    ajaxSubmit({articleId: app.form.articleId}, Api.Article.info, "GET", (res) => {
+                        let aa = res.data;
+                        app.newsTitle = aa.title;//赋值标题
+                        app.newsTime = timestampToTime(aa.createDate);//新闻发表时间
+                        app.info = aa.content;//新闻内容
 
-                if (app.SubmitBottonClass["yes"]) {
-                    let value = app.form.comment;
-                    console.log("获得的值为--", value);
-                    ajaxSubmit({text: "text"}, Api.Article.saveComment + "?content=" + value + "&articleId=" + app.form.articleId + "&channelId=" + app.form.channelId+"&userId="+localStorage.getItem("userId"), "POST", (res) => {
-                        app.goback();//返回
-                        app.getcommentList();//刷新评论列表
+                        // $("#name").html(aa.title);
+                        // $(document).attr("title", aa.title);//修改title值
+
+                        dd.biz.navigation.setTitle({
+                            title: aa.title,//控制标题文本，空字符串表示显示默认文本
+                            onSuccess: function (result) {
+                                /*结构
+                                {
+                                }*/
+                            },
+                            onFail: function (err) {
+                            }
+                        });
+
+                        app.isShow = true;
                     }, (err) => {
                         console.log(err);
                     });
+                }
+                //根据id获取评论列表
+                , getcommentList: () => {
+                    ajaxSubmit(null, Api.Article.CommentList + "?page=1&limit=999999&articleId=" + app.form.articleId + "&type=1", "POST", (res) => {
+                        let aa = res.data.records;//评论列表
+                        if (aa.length > 0) {//如果有评论
+                            app.commentList = [];
+                            app.iscommentList = true;
+                            $.each(aa, (idx, obj) => {
+                                let icon;
+                                let userName;
+                                if (obj.updateUser != undefined) {
+                                    icon = obj.updateUser.icon;
+                                    if (icon == "" || icon == null || icon == undefined) {
+                                        icon = app.NoIcon;
+                                    }
+                                    userName = obj.updateUser.loginName;
+                                } else {
+                                    icon = app.NoIcon;
+                                    userName = app.NoName;
+                                }
+
+                                let count = obj.blogInteractions.length;
+
+                                let type;
+                                $.each(obj.blogInteractions, (_idx, _obj) => {
+                                    if (_obj.createId == localStorage.getItem("userId")) {
+                                        type = true;
+                                    } else {
+                                        type = false;
+                                    }
+                                });
+
+                                let icon2;
+                                if (type) {
+                                    icon2 = app.Yes_icon;
+                                } else {
+                                    icon2 = app.No_icon;
+                                }
+                                app.commentList.push({
+                                    time: timestampToTime(obj.createDate),
+                                    userName: userName,//用户名
+                                    userTouxiang: icon,//用户头像
+                                    comment: obj.content,//用户评论
+                                    count: count,//点赞数量
+                                    type: type,//是否点过了
+                                    icon: icon2,//点赞图标
+                                    id: obj.id//评论的id
+                                })
+
+                            });
+                        }
+
+                    }, (err) => {
+                        console.log(err);
+                    });
+                }
+                //获取阅读量
+                , getLookNumber() {
+                    ajaxSubmit({articleId: app.form.articleId}, Api.Article.LookNumber, "POST-1", (res) => {
+                        app.LookNumber = res.data;//赋值阅读量
+                    }, (err) => {
+
+                    })
+                }
+                //评论点赞
+                , dinzan_2: (idx, type, id) => {
+                    let list = app.commentList[idx];
+                    if (type) {
+                        list.type = false;
+                        list.icon = app.No_icon;
+                        list.count = list.count - 1;
+                    } else {
+                        list.type = true;
+                        list.icon = app.Yes_icon;
+                        list.count = list.count + 1;
+                    }
+
+                    ajaxSubmit({
+                        userId: localStorage.getItem("userId"),
+                        commentId: id
+                    }, Api.Article.CommentLike, "GET", (res) => {
+                        console.log("点赞成功");
+                    }, (err) => {
+                        wu.showMessage({
+                            title: err,
+                            type: "error"
+                        });
+                    })
 
 
                 }
-            }
-        }
-    })
+                //根据id获取点赞列表
+                , getLikeList: () => {
+                    ajaxSubmit({articleId: app.form.articleId}, Api.Article.likeList, "GET", (res) => {
+                        let aa = res.data;
+                        let userid = localStorage.getItem("userId");
+                        app.Like.count = aa.length;//点赞数数量
+                        let i = false;
+                        $.each(aa, (idx, obj) => {
+                            if (obj.createId == userid) {
+                                i = true;
+                                // app.classStyle["heartAnimation"] = true;
+                                // app.classStyle.rel = "unlike";
+                                // // $(this).addClass("heartAnimation").attr("rel", "unlike");
+                                // app.isClick = true;//被点击了
 
-    $(() => {
+                            }
+                        });
 
+                        if (i) {
+                            app.Like.type = true;
+                            app.Like.icon = app.Yes_icon;
+                        } else {
+                            app.Like.type = false;
+                            app.Like.icon = app.No_icon;
+                        }
 
-        //每两秒修正一下元素的高度
-        setInterval(() => {
-            app.commentHight = $(".mui-card-footer").offset().top;
-        }, 2 * 1000);
-
-
-        //获取文章的id
-        let articleId = parseInt(GetQueryString("id"));
-        app.form.articleId = articleId;
-        app.form.channelId = GetQueryString("newsType");
-
-
-        app.getInfo();//获得详情
-        app.getcommentList();//获取评论
-        app.getLikeList();//判断是否以前就点赞了
-
-
-        // $(".write").hide();
-
-        $('body').on("click", '.heart', function () {
-
-
-            var A = $(this).data("id");
-            var B = A.split("like");
-            var messageID = B[1];
-            var C = app.Count;
-            $(this).css("background-position", "");
-            var D = $(this).attr("rel");
-
-            if (D === 'like') {
-                console.log("点赞了");
-                // $("#likeCount" + messageID).html(C + 1);
-                // if(!app.islock){
-                //     app.islock = true;
-                app.Count = C + 1;
-                // }
-                app.classStyle["heartAnimation"] = true;
-                app.classStyle.rel = "unlike";
-                // $(this).addClass("heartAnimation").attr("rel", "unlike");
-                app.isClick = true;//被点击了
-            } else {
-                // $("#likeCount" + messageID).html(C - 1);
-                app.Count = C - 1;
-                console.log("取消点赞");
-                app.classStyle["heartAnimation"] = false;
-                app.classStyle.rel = "like";
-                // $(this).removeClass("heartAnimation").attr("rel", "like");
-                $(this).css("background-position", "left");
-                app.isClick = false;//取消点击
-            }
-
-            //开始点赞或取消点赞
-            app.articleLike(articleId);
-
-        });
-
-
-        $(window).scroll(function () {
-            // console.log($(window).scrollTop() + $(window).height()-$(document).height());
-            let i = $(window).scrollTop();// + $(window).height()-$(document).height();
-            // console.log(i,"--",app.commentHight);
-
-            if (i >= app.commentHight) {
-                // if (app.isClick && !app.islock) {
-                //
-                //     app.classStyle["heartAnimation"] = true;
-                //     app.classStyle.rel = "unlike";
-                //     // console.log(111111);
-                //     app.islock = true;
-                // }
-
-                // app.show =;
-                if (!app.islock) {
-                    // $(".write").show();
-                    app.show = true;
-                    app.islock = true;
-                    app.writeAnimate["bounceInLeft"] = true;
-                    app.writeAnimate["bounceOutLeft"] = false;
-
+                    }, (err) => {
+                        console.log(err);
+                    });
                 }
-            } else {
-                // if (app.isClick && app.islock) {
-                //     app.islock = false;
-                //     app.classStyle["heartAnimation"] = true;
-                //     app.classStyle.rel = "unlike";
-                //     // console.log(222222);
-                // }
-                // app.show = false;
-                if (app.islock) {
+                , toLike(type, id) {
+                    if (type) {
+                        app.Like.type = false;
+                        app.Like.count = app.Like.count - 1;
+                        app.Like.icon = app.No_icon;
+                    } else {
+                        app.Like.type = true;
+                        app.Like.count = app.Like.count + 1;
+                        app.Like.icon = app.Yes_icon;
+                    }
+                    app.articleLike(id);
+                }
+                //根据id来点赞和取消点赞
+                , articleLike: () => {
+                    ajaxSubmit({
+                        articleId: app.form.articleId,
+                        userId: localStorage.getItem("userId")
+                    }, Api.Article.like, "GET", (res) => {
+
+                    }, (err) => {
+                        console.log(err);
+                    });
+                }
+                , toWrite: () => { //显示留言板
+                    app.show = false;
+                    console.log(app.commentHight);
+                    console.log("获得的值为--", this);
+                    $("#right").animate({left: "0"});
+
+                    $("#left").animate({right: "100%"}, function () {
+                        $("#left").hide();
+                        app.navShow = true;
+                    });
+                }
+                , goback: () => {//返回新闻详情
+                    $("#left").show();
+                    app.navShow = false;
+                    $("#right").animate({left: "100%"});
+
+                    $("#left").animate({right: "0"}, function () {
+                        go($(".mui-table-view"));
+                    });
+                }
+                , inwrite: () => {
+                    let val = app.form.comment;
+                    if (val != "" && val != null) {
+                        app.SubmitBottonClass["no"] = false;
+                        app.SubmitBottonClass["yes"] = true;
+                    } else {
+                        app.SubmitBottonClass["no"] = true;
+                        app.SubmitBottonClass["yes"] = false;
+                    }
+                }
+                , tofx() {
+                    dd.biz.util.share({
+                        type: 0,//分享类型，0:全部组件 默认；1:只能分享到钉钉；2:不能分享，只有刷新按钮
+                        url: Api.html_url + "?id=" + app.form.articleId + "&newsType=" + app.form.channelId,
+                        title: app.newsTitle,
+                        content: sessionStorage.getItem("content"),
+                        image: sessionStorage.getItem("img"),
+                        onSuccess: function () {
+                            //onSuccess将在调起分享组件成功之后回调
+                            /**/
+                        },
+                        onFail: function (err) {
+                        }
+                    });
+                }
+                , submit: () => {//提交
+
+                    if (app.SubmitBottonClass["yes"]) {
+                        let value = app.form.comment;
+                        console.log("获得的值为--", value);
+                        ajaxSubmit({text: "text"}, Api.Article.saveComment + "?content=" + value + "&articleId=" + app.form.articleId + "&channelId=" + app.form.channelId + "&userId=" + localStorage.getItem("userId"), "POST", (res) => {
+                            app.getcommentList();//刷新评论列表
+                            wu.showMessage({
+                                title: "发表评论成功",
+                                type: "success"
+                            });
+                            setTimeout(() => {
+                                app.goback();
+                                app.form.comment = "";
+                            }, 1000);
+                        }, (err) => {
+                            console.log(err);
+                        });
+
+
+                    }
+                }
+            }
+        })
+
+        $(() => {
+
+
+            //每两秒修正一下元素的高度
+            setInterval(() => {
+                app.commentHight = $(".mui-card-footer").offset().top;
+            }, 2 * 1000);
+
+
+            //
+            // let string = "POST";
+            // string.split("-")[1];
+            // console.log("--------------------------1111111111111--------------1111111111-------",string.split("-")[0]);
+
+
+            //获取文章的id
+            let articleId = parseInt(GetQueryString("id"));
+            app.form.articleId = articleId;
+            app.form.channelId = GetQueryString("newsType");
+
+
+            app.getInfo();//获得详情
+            app.getcommentList();//获取评论
+            app.getLikeList();//判断是否以前就点赞了
+            app.getLookNumber();//获取阅读量
+
+
+            dd.biz.navigation.setRight({
+                show: true,//控制按钮显示， true 显示， false 隐藏， 默认true
+                control: true,//是否控制点击事件，true 控制，false 不控制， 默认false
+                text: '分享',//控制显示文本，空字符串表示显示默认文本
+                onSuccess: function (result) {
+                    app.tofx();
+                },
+                onFail: function (err) {
+                }
+            });
+
+
+            // $(".write").hide();
+
+            $('body').on("click", '.heart', function () {
+
+
+                var A = $(this).data("id");
+                var B = A.split("like");
+                var messageID = B[1];
+                var C = app.Count;
+                $(this).css("background-position", "");
+                var D = $(this).attr("rel");
+
+                if (D === 'like') {
+                    console.log("点赞了");
+                    // $("#likeCount" + messageID).html(C + 1);
+                    // if(!app.islock){
+                    //     app.islock = true;
+                    app.Count = C + 1;
+                    // }
+                    app.classStyle["heartAnimation"] = true;
+                    app.classStyle.rel = "unlike";
+                    // $(this).addClass("heartAnimation").attr("rel", "unlike");
+                    app.isClick = true;//被点击了
+                } else {
+                    // $("#likeCount" + messageID).html(C - 1);
+                    app.Count = C - 1;
+                    console.log("取消点赞");
+                    app.classStyle["heartAnimation"] = false;
+                    app.classStyle.rel = "like";
+                    // $(this).removeClass("heartAnimation").attr("rel", "like");
+                    $(this).css("background-position", "left");
+                    app.isClick = false;//取消点击
+                }
+
+                //开始点赞或取消点赞
+                app.articleLike(articleId);
+
+            });
+
+
+            $(window).scroll(function () {
+                // console.log($(window).scrollTop() + $(window).height()-$(document).height());
+                let i = $(window).scrollTop();// + $(window).height()-$(document).height();
+                // console.log(i,"--",app.commentHight);
+
+                if (i >= app.commentHight) {
+                    // if (app.isClick && !app.islock) {
+                    //
+                    //     app.classStyle["heartAnimation"] = true;
+                    //     app.classStyle.rel = "unlike";
+                    //     // console.log(111111);
+                    //     app.islock = true;
+                    // }
+
+                    // app.show =;
+                    if (!app.islock) {
+                        // $(".write").show();
+                        app.show = true;
+                        app.islock = true;
+                        app.writeAnimate["bounceInLeft"] = true;
+                        app.writeAnimate["bounceOutLeft"] = false;
+
+                    }
+                } else {
+                    // if (app.isClick && app.islock) {
+                    //     app.islock = false;
+                    //     app.classStyle["heartAnimation"] = true;
+                    //     app.classStyle.rel = "unlike";
+                    //     // console.log(222222);
+                    // }
                     // app.show = false;
-                    app.islock = false;
-                    app.writeAnimate["bounceInLeft"] = false;
-                    app.writeAnimate["bounceOutLeft"] = true;
+                    if (app.islock) {
+                        // app.show = false;
+                        app.islock = false;
+                        app.writeAnimate["bounceInLeft"] = false;
+                        app.writeAnimate["bounceOutLeft"] = true;
+                    }
+
                 }
+            });
 
-            }
+
         });
-
-
     });
-
 </script>
-
+<script src="../../js/common/istoken.js"></script>
 </html>

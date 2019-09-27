@@ -61,11 +61,10 @@ var pass = "Qyw6tX4f";// 8位随机签名加密码
 })(jQuery);
 
 
-
 //警告弹窗--使用layer移动版弹窗
-const warningAlert = (msg,close)=>{
+const warningAlert = (msg, close) => {
     let is = false;
-    if(close==true){
+    if (close == true) {
         is = true;
     }
     //自定义标题风格
@@ -74,18 +73,13 @@ const warningAlert = (msg,close)=>{
             '错误',
             'background-color: #FF4351; color:#fff;'
         ]
-        ,content: msg
-        ,anim:"up"
-        ,shade: 'background-color: rgba(0,0,0,0.7)'
-        ,shadeClose:is
+        , content: msg
+        , anim: "up"
+        , shade: 'background-color: rgba(0,0,0,0.7)'
+        , shadeClose: is
 
     });
 };
-
-
-
-
-
 
 
 /*跳转到某一元素*/
@@ -407,16 +401,23 @@ var ImageajaxSubmit = function (base64url, url, type, method, imgName, isasync) 
 
 
 //通用接口
-var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
+var ajaxSubmit = function (submitData, url, type, method, error, isasync) {
     var data;
     var headers = {};
     // headers["Access-Control-Allow-Origin"] = "*";
-    headers["token"] = sessionStorage.getItem('token');
+    headers["token"] = localStorage.getItem('token');
+    // headers["token"] = "05494cca-9460-4b44-ac4c-be695d3381a0";
     // console.log(sessionStorage.getItem('token'));
     var async_is = true;
     if (type != "GET") {
-        headers["Content-Type"] = "application/json";
-        data = JSON.stringify(submitData);
+        let i = type.split("-");
+        if (i.length > 0) {
+            headers["Content-Type"] = "application/x-www-form-urlencoded";
+            data = submitData;
+        } else {
+            headers["Content-Type"] = "application/json";
+            data = JSON.stringify(submitData);
+        }
     } else {
         data = submitData;
     }
@@ -443,17 +444,21 @@ var ajaxSubmit = function (submitData, url, type, method,error,isasync) {
             } else {
                 error(res.message);
                 //layer.msg(res.msg, {icon: 2, time: 0, shade: 0.7});
-                warningAlert(res.message,true);
+                warningAlert(res.message, true);
             }
         },
         error: function (XMLHttpResponse, textStatus, errorThrown) {
-            error("网络错误");
-            warningAlert("网络错误",true);
+            // error("网络错误");
+            // warningAlert("网络错误",true);
             // alert("网络错误");
             console.log("1 异步调用返回失败,XMLHttpResponse.readyState:" + XMLHttpResponse.readyState);
             console.log("2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status);
             console.log("3 异步调用返回失败,textStatus:" + textStatus);
             console.log("4 异步调用返回失败,errorThrown:" + errorThrown);
+            warningAlert("1 异步调用返回失败,XMLHttpResponse.readyState:" + XMLHttpResponse.readyState
+                + "2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status
+                + "3 异步调用返回失败,textStatus:" + textStatus
+                + "4 异步调用返回失败,errorThrown:" + errorThrown, true);
         }
     });
 };
@@ -572,13 +577,13 @@ function JsonUnique(list, id) {
 
 function timestampToTime(timestamp) {
     let i;
-    let is = timestamp+"";
-    if(is.length==13){
+    let is = timestamp + "";
+    if (is.length == 13) {
         i = 1;
-    }else if(is.length==10){
+    } else if (is.length == 10) {
         i = 1000;
-    }else{
-        i=1;
+    } else {
+        i = 1;
     }
     var date = new Date(timestamp * i);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
     Y = date.getFullYear() + '-';
@@ -1167,6 +1172,28 @@ const smallTobig = (str) => {
             break;
     }
     return a;
+};
+
+
+function timeFn(d1) {//di作为一个变量传进来
+    //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
+    var dateBegin = new Date(d1.replace(/-/g, "/"));//将-转化为/，使用new Date
+    var dateEnd = new Date();//获取当前时间
+    var dateDiff = dateEnd.getTime() - dateBegin.getTime();//时间差的毫秒数
+    var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+    var leave1 = dateDiff % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
+    var hours = Math.floor(leave1 / (3600 * 1000));   //计算出小时数
+    //计算相差分钟数
+    var leave2 = leave1 % (3600 * 1000);    //计算小时数后剩余的毫秒数
+    var minutes = Math.floor(leave2 / (60 * 1000));   //计算相差分钟数
+    //计算相差秒数
+    var leave3 = leave2 % (60 * 1000);    //计算分钟数后剩余的毫秒数
+    var seconds = Math.round(leave3 / 1000);
+
+    console.log(Math.floor(dateDiff / (1000)));
+    // console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+    // console.log(dateDiff+"时间差的毫秒数",dayDiff+"计算出相差天数",leave1+"计算天数后剩余的毫秒数"
+    //     ,hours+"计算出小时数",minutes+"计算相差分钟数",seconds+"计算相差秒数");
 };
 
 

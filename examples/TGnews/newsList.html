@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>天港新闻列表页面</title>
+    <title id="name"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/vue-2-6-10.js"></script>
     <link rel="stylesheet" href="../../dist/css/mui.css">
     <link rel="stylesheet" href="../../css/app.css">
 
     <style>
+        [v-cloak] {
+            display: none;
+        }
         * {
             touch-action: pan-y;
         }
@@ -21,12 +26,12 @@
         .info-item-time {
             margin: 0 auto;
             text-align: center;
-            font-size: 3vw;
+            font-size: 3.3vw;
             width: 35vw;
             height: 6vw;
             line-height: 6vw;
-            background: #BEBEBE;
-            color: white;
+            /*background: #BEBEBE;*/
+            color: #A5A5A5;
             border-radius: 2px;
         }
 
@@ -67,6 +72,10 @@
             overflow: auto;
             display: inline-block;
         }
+
+        .font-color {
+            color: #A5A5A5;
+        }
     </style>
     <link rel="stylesheet" href="../../js/layuiadmin/layui/css/layui.css">
     <link rel="stylesheet" href="../../js/layer.mobile-v2.0/layer_mobile/need/layer.css">
@@ -75,58 +84,63 @@
 
 </head>
 <body>
-<div id="info">
+
+<div id="info" v-cloak>
     <div class="mui-content" v-if="islogin">
         <div id="box">
-            <div class="info-item" v-for="(item,idx) in list">
-                <div class="info-item-time">{{item.newsTime}}</div>
-                <div class="mui-card">
-                    <div class="mui-card-header mui-card-media" :style="item.indexImg">
-                        <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
-                    </div>
-                    <div class="mui-card-content">
-                        <div class="mui-card-content-inner">
-                            <p>{{item.newsTime}}</p>
-                            <p style="color: #333;">{{item.remark}}</p>
+            <div v-show="isShow">
+                <div class="info-item" v-for="(item,idx) in list">
+                    <div class="info-item-time">{{item.newsTime}}</div>
+                    <div class="mui-card" @click="toherf(item.id,item.remark,item.img)">
+                        <div class="mui-card-header mui-card-media" :style="item.indexImg">
+                            <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
                         </div>
-                    </div>
-                    <div class="mui-card-footer"  @click="toherf(item.id)">
-                        <div class="mui-card-link">详情</div>
-                        <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+                        <div class="mui-card-content">
+                            <div class="mui-card-content-inner">
+                                <p>{{item.newsTime}}</p>
+                                <p style="color: #333;">{{item.remark}}</p>
+                            </div>
+                        </div>
+                        <div class="mui-card-footer">
+                            <div class="mui-card-link">详情</div>
+                            <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div v-if="have" class="bottom-foot"><i
-                    class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}
+            <div v-if="have" class="bottom-foot font-color"><i
+                    class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop font-color"></i>{{loading.loadingTitle}}
             </div>
-            <div v-else class="bottom-foot">{{loading.finish}}</div>
+            <div v-else class="bottom-foot font-color">{{loading.finish}}</div>
 
         </div>
 
         <nav id="foot" class="mui-bar mui-bar-tab hide">
-            <a class="mui-tab-item" href="#Popover_0">新人必点</a>
-            <a class="mui-tab-item" href="#Popover_1">学院指南</a>
-            <a class="mui-tab-item">学习平台</a>
-            <a class="mui-tab-item" href="newsList_item.html?type=25">学院动态</a>
+            <a class="mui-tab-item" href="#Popover_0"><i class="layui-icon layui-icon-menu-fill"
+                                                         style="color:#E0E0E0"></i> 新人必点</a>
+            <a class="mui-tab-item" href="#Popover_1"><i class="layui-icon layui-icon-menu-fill"
+                                                         style="color:#E0E0E0"></i>学院指南</a>
+            <a class="mui-tab-item"><i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>学习平台</a>
+            <a class="mui-tab-item" href="newsList_item.html?type=25"><i class="layui-icon layui-icon-menu-fill"
+                                                                         style="color:#E0E0E0"></i>学院动态</a>
         </nav>
         <div id="Popover_0" class="mui-popover mui-bar-popover">
             <div class="mui-popover-arrow"></div>
             <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=20">高管认知</a>
+                <li class="mui-table-view-cell"><a href="newsList_item.html?type=20&name=高管认知">高管认知</a>
                 </li>
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=21">分店介绍</a>
+                <li class="mui-table-view-cell"><a href="newsList_item.html?type=21&name=分店介绍">分店介绍</a>
                 </li>
             </ul>
         </div>
         <div id="Popover_1" class="mui-popover mui-bar-popover">
             <div class="mui-popover-arrow"></div>
             <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=22">学院简介</a>
+                <li class="mui-table-view-cell"><a href="newsList_item.html?type=22&name=学院简介">学院简介</a>
                 </li>
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=23">师资团队</a>
+                <li class="mui-table-view-cell"><a href="newsList_item.html?type=23&name=师资团队">师资团队</a>
                 </li>
-                <li class="mui-table-view-cell"><a href="newsList_item.html?type=24">培训制度</a>
+                <li class="mui-table-view-cell"><a href="newsList_item.html?type=24&name=培训制度">培训制度</a>
                 </li>
             </ul>
         </div>
@@ -147,21 +161,25 @@
         {{errorMsg}}
     </div>
 </div>
+
 </body>
-<script src="../../js/jquery-1.12.4.js"></script>
+
 <script src="../../js/layer.mobile-v2.0/layer_mobile/layer.js"></script>
 <script src="../../dist/js/mui.min.js"></script>
 <script src="../../js/jquery.cookie.js"></script>
-<script src="../../js/vue-2-6-10.js"></script>
 <script src="../../js/common/api.js"></script>
 <script src="../../js/common/localjs.js"></script>
 <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.7.13/dingtalk.open.js"></script>
 <script>
     let newsType;
     dd.ready(function () {
+
+        // $("#info").hide();
+
         let app = new Vue({
             el: "#info",
             data: {
+                isShow: true,
                 islogin: true,
                 errorMsg: "",//错误信息
                 page: 1,//页数
@@ -176,53 +194,29 @@
                     loadingTitle: "加载中",//加载中显示的文本,
                     finish: "没有更多了",//没有更多数据显示的文本
                 },
-                list: [
-
-                ]
-            },
-            mounted: () => {
-
-            },
-            methods: {
-                toherf(event) {//点击跳转
+                list: []
+            }
+            , methods: {
+                toherf(event,remark,img) {//点击跳转
                     console.log(event);
                     //跳转到详情页面
-                    window.location.href = "newsinfo.html?id="+event+"&newsType="+app.newsType;
+                    window.location.href = "newsinfo.html?id=" + event + "&newsType=" + app.newsType;
+                    sessionStorage.setItem("content",remark);
+                    sessionStorage.setItem("img",img);
                 }
+
             }
+            , mounted() {//实例渲染之前
+
+            }
+            , updated() {//实例渲染完后调用
+                // $("#info").hide();
+            }
+
 
         });
 
 
-        const loginIn = () => {
-            dd.runtime.permission.requestAuthCode({
-                corpId: Api.corpId, // 企业id
-                onSuccess: function (info) {
-                    // alert(JSON.stringify(info));
-                    let code = info.code;// 通过该免登授权码可以获取用户身份
-                    ajaxSubmit({code: code}, Api.Login.ing, "GET", (e) => {
-                        app.islogin = true;
-                        let aa = e.data;
-                        alert(JSON.stringify(aa));
-                        //存入用户信息
-                        localStorage.setItem("token", aa.token);
-                        localStorage.setItem("userId", aa.id);
-                        localStorage.setItem("userName", aa.name);
-                        localStorage.setItem("userIcon", aa.icon);
-
-                    }, (err) => {
-
-                        app.islogin = false;
-                        app.errorMsg = err;
-                    });
-                },
-                onFail: function (err) {
-                    alert(JSON.stringify(err));
-                    // console.log(err);
-                }
-            });
-
-        };
 
 
         //获得下一页
@@ -235,28 +229,34 @@
                 let page = app.page;
                 let limit = app.limit;
 
-                ajaxSubmit({page: page,limit:limit,channelId:app.newsType}, Api.Article.list, "GET", (e) => {
+                ajaxSubmit({page: page, limit: limit, channelId: app.newsType}, Api.Article.list, "GET", (e) => {
                     app.islock = true;//开锁,,请求成功后就开锁
                     let aa = e.data;
                     if (aa.length > 0) {
-                        $.each(aa, (idx,obj) => {
+                        $.each(aa, (idx, obj) => {
                             let item = {};
-                            item.newsTime = updateTime(2);
+                            item.newsTime = timestampToTime(obj.createDate);
                             item.indexImg = "background-image:url(" + obj.showPic + ")";
                             // item.indexImg="background-image:url(../images/muwu.jpg)",//新闻图片
                             item.title = obj.title;
                             item.remark = obj.marks;
                             item.id = obj.id;
+                            item.img = obj.showPic;
 
                             app.list.push(item);
                         });
-                        app.page = page+1;
+                        app.page = page + 1;
+
                         app.have = true;
-                    }else {
+                    } else {
                         app.have = false;
                     }
 
-                },(err)=>{
+                    if (app.list.length < 5) {
+                        app.have = false;
+                    }
+
+                }, (err) => {
                     console.log(err);
                 });
 
@@ -264,20 +264,53 @@
             }
         };
 
-        // loginIn();
-        //登录
-        let token = localStorage.getItem("userId");
-        if (token == "" || token == null || token == undefined) {
-            loginIn();
-        } else {
-            app.islogin = true;
+
+        // newsType = GetQueryString("type");
+        newsType = 2;
+        app.newsType = newsType;
+        let TitleName;
+        if (newsType == 2) {
+            appid = 1;
+            // $("#name").html("天港新闻");
+            TitleName = "天港新闻";
+        } else if (newsType == 5) {
+            appid = 2;
+            // $("#name").html("天港管理学院");
+            // $(document).attr("title","天港管理学院");
+            TitleName = "天港管理学院";
+        } else if (newsType == 19) {
+            appid = 3;
+            // $("#name").html("浩强总讲话");
+            // $(document).attr("title","浩强总讲话");
+            TitleName = "浩强总讲话";
         }
 
+        dd.biz.navigation.setTitle({
+            title: TitleName,//控制标题文本，空字符串表示显示默认文本
+            onSuccess: function (result) {
+                /*结构
+                {
+                }*/
+            },
+            onFail: function (err) {
+            }
+        });
 
-        newsType = GetQueryString("type");
+
+        // loginIn();
+        //登录
+        // let token = localStorage.getItem("userId");
+        // if (token == "" || token == null || token == undefined) {
+        //     loginIn(appid);
+        // } else {
+        //     app.islogin = true;
+        // }
+
+
+
         // newsType = 2;
 
-        app.newsType = newsType;
+
         // console.log(this);
         if (newsType == 5) {//说明是管理学院进入
             $("#box").css({"height": "93vh", "overflow": "auto"});
@@ -288,14 +321,14 @@
         getList();//获取列表详情
 
 
-        if (newsType != 3) {//没有导航栏的页面
+        if (newsType != 5) {//没有导航栏的页面
             $(window).scroll(function () {
                 // console.log($(window).scrollTop() + $(window).height()-$(document).height());
                 let i = $(window).scrollTop() + $(window).height() - $(document).height();
                 // console.log(i);
                 if (i == 0 || i == 0.5 || i == -1) {//页面滚动到了底部
                     getList();
-                }else{
+                } else {
                     app.have = true;
                 }
             });
@@ -319,5 +352,5 @@
     });
 
 </script>
-
+<script src="../../js/common/istoken.js"></script>
 </html>
