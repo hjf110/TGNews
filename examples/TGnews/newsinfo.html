@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title id="name"></title>
@@ -30,7 +31,8 @@
             margin: 0;
         }
 
-        .mui-card-footer:before, .mui-card-header:after {
+        .mui-card-footer:before,
+        .mui-card-header:after {
             position: absolute;
             top: 0;
             right: 0;
@@ -137,133 +139,134 @@
 
 
 </head>
+
 <body style=" background-color: #FFFFFF;">
 
-<div id="app" class="mui-content" style=" background-color: #FFFFFF;" v-cloak>
+    <div id="app" class="mui-content" style=" background-color: #FFFFFF;" v-cloak>
 
 
-    <!--    <header class="mui-bar mui-bar-nav" v-if="show" style="background: white;">-->
-    <!--        <a class="">-->
-    <!--            <div :class="classStyle" data-id="like2" :rel="classStyle.rel" style="left: 0vw;bottom: 0vw;"></div>-->
-    <!--            <div class="likeCount" data-id="likeCount2" style="margin-top: 0px;position:relative;top:13px;">{{Count}}</div>-->
-    <!--        </a>-->
+        <!--    <header class="mui-bar mui-bar-nav" v-if="show" style="background: white;">-->
+        <!--        <a class="">-->
+        <!--            <div :class="classStyle" data-id="like2" :rel="classStyle.rel" style="left: 0vw;bottom: 0vw;"></div>-->
+        <!--            <div class="likeCount" data-id="likeCount2" style="margin-top: 0px;position:relative;top:13px;">{{Count}}</div>-->
+        <!--        </a>-->
 
-    <!--        <a class="left-a" @click="toWrite">写留言</a>-->
-    <!--    </header>-->
+        <!--        <a class="left-a" @click="toWrite">写留言</a>-->
+        <!--    </header>-->
 
 
-    <div id="left">
-        <div class="mui-card" v-show="isShow">
-            <div class="mui-card-header mui-card-media">
-                <!--                    <img src="../images/logo.png" />-->
-                <!--                    <div class="mui-media-body">-->
-                <h3 v-html="newsTitle"></h3>
-                <p>发表于<span v-html="newsTime"></span></p>
-                <!--                    </div>-->
-                <!--<img class="mui-pull-left" src="../images/logo.png" width="34px" height="34px" />
+        <div id="left">
+            <div class="mui-card" v-show="isShow">
+                <div class="mui-card-header mui-card-media">
+                    <!--                    <img src="../images/logo.png" />-->
+                    <!--                    <div class="mui-media-body">-->
+                    <h3 v-html="newsTitle"></h3>
+                    <p>发表于<span v-html="newsTime"></span></p>
+                    <!--                    </div>-->
+                    <!--<img class="mui-pull-left" src="../images/logo.png" width="34px" height="34px" />
                 <h2>小M</h2>
                 <p>发表于 2016-06-30 15:30</p>-->
-            </div>
-            <div class="mui-card-content" v-html='info'>
+                </div>
+                <div class="mui-card-content" v-html='info'>
 
-            </div>
-            <div class="mui-card-footer">
-                <!--                    <a style="color: #5B6A91;" class="mui-card-link" ></a>-->
-                <a class="mui-card-link">
-                    <!--                        <div :class="classStyle" data-id="like2" :rel="classStyle.rel"></div>-->
-                    <!--                        <div class="likeCount" data-id="likeCount2" v-html="Count"></div>-->
-                    <span style="position: absolute;top: -4px;left: 10px;height: 100%;width: 200px">
+                </div>
+                <div class="mui-card-footer">
+                    <!--                    <a style="color: #5B6A91;" class="mui-card-link" ></a>-->
+                    <a class="mui-card-link">
+                        <!--                        <div :class="classStyle" data-id="like2" :rel="classStyle.rel"></div>-->
+                        <!--                        <div class="likeCount" data-id="likeCount2" v-html="Count"></div>-->
+                        <span style="position: absolute;top: -4px;left: 10px;height: 100%;width: 200px">
 
-                           <img @click="toLike(Like.type,form.articleId)" style="width: 20px;"
-                                :src="Like.icon">
-                            <span style="font-size: 18px;position: relative;top: 4px;color:#636F8F">{{Like.count}}</span>
+                            <img @click="toLike(Like.type,form.articleId)" style="width: 20px;" :src="Like.icon">
+                            <span
+                                style="font-size: 18px;position: relative;top: 4px;color:#636F8F">{{Like.count}}</span>
                         </span>
-                </a>
-                <a class="mui-card-link"><span style="color:#C7C7C7">阅读量&nbsp;{{LookNumber}}</span></a>
+                    </a>
+                    <a class="mui-card-link"><span style="color:#C7C7C7">阅读量&nbsp;{{LookNumber}}</span></a>
 
 
-            </div>
-            <div class="mui-card-footer" style="background:rgb(242, 242, 242); ">
-                <!--                    <a style="color: #5B6A91;" class="mui-card-link" ></a>-->
-                <a style="color: #C7C7C7;" class="mui-card-link">全部评论</a>
-                <a style="color: #636F8F;" class="mui-card-link" @click="toWrite">写评论</a>
+                </div>
+                <div class="mui-card-footer" style="background:rgb(242, 242, 242); ">
+                    <!--                    <a style="color: #5B6A91;" class="mui-card-link" ></a>-->
+                    <a style="color: #C7C7C7;" class="mui-card-link">全部评论</a>
+                    <a style="color: #636F8F;" class="mui-card-link" @click="toWrite">写评论</a>
 
 
-            </div>
-            <div class="mui-card-footer" :style="footStyle" v-if="iscommentList">
-                <ul class="mui-table-view" :style="footStyle">
-                    <li class="mui-table-view-cell mui-media" v-for="(item,idx) in  commentList">
-                        <a href="javascript:;">
-                            <img style="border-radius: 2px;" class="mui-media-object mui-pull-left"
-                                 :src="item.userTouxiang">
-                            <div class="mui-media-body" :style="comentTitleStyle">
-                                {{item.userName}}
-                                <span style="position: absolute;top: 10px;right: 0px;"><img
-                                        @click="dinzan_2(idx,item.type,item.id)" style="width: 20px;"
-                                        :src="item.icon">&nbsp;<span
-                                        style="font-size: 18px;position: relative;top: 4px;color:#636F8F">{{item.count}}</span></span>
-                                <div :style="commentItemStyle" v-html="item.comment"></div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div style="text-align: center;" class="mui-card-footer" :style="footStyle" v-else>
-                <div></div>
-                {{iscommentList_no_text}}
-                <div></div>
-            </div>
-        </div>
-
-
-        <a v-show="show" :class="writeAnimate" @click="toWrite">
-            <span class="bbb">
-               <i class="layui-icon layui-icon-edit"
-                  style="position: relative;top: 8px; font-size: 30px; color: white;"></i>
-            </span>
-        </a>
-
-    </div>
-    <div id="right">
-        <div class="mui-card" style="background-color: transparent;box-shadow: none;margin:20px 10px;">
-            <div class="mui-card-header" style="font-size: 4vw;">
-                <h5>{{newsTitle}}</h5>
-            </div>
-            <div class="mui-card-content" style="border-top: 1px solid #EAEAEA; border-bottom: 1px solid #EAEAEA;">
-                <div class="mui-card-content-inner">
-                    <div class="mui-input-row" style="margin: 10px 5px;">
-                        <textarea style="background-color: transparent; border: none;" id="textarea" rows="5"
-                                  @input="inwrite" placeholder="请输入评论" v-model="form.comment"></textarea>
-                    </div>
+                </div>
+                <div class="mui-card-footer" :style="footStyle" v-if="iscommentList">
+                    <ul class="mui-table-view" :style="footStyle">
+                        <li class="mui-table-view-cell mui-media" v-for="(item,idx) in  commentList">
+                            <a href="javascript:;">
+                                <img style="border-radius: 2px;" class="mui-media-object mui-pull-left"
+                                    :src="item.userTouxiang">
+                                <div class="mui-media-body" :style="comentTitleStyle">
+                                    {{item.userName}}
+                                    <span style="position: absolute;top: 10px;right: 0px;"><img
+                                            @click="dinzan_2(idx,item.type,item.id)" style="width: 20px;"
+                                            :src="item.icon">&nbsp;<span
+                                            style="font-size: 18px;position: relative;top: 4px;color:#636F8F">{{item.count}}</span></span>
+                                    <div :style="commentItemStyle" v-html="item.comment"></div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div style="text-align: center;" class="mui-card-footer" :style="footStyle" v-else>
+                    <div></div>
+                    {{iscommentList_no_text}}
+                    <div></div>
                 </div>
             </div>
-            <div class="mui-card-footer" style="margin-top: 20px;">
-                <a> </a>
-                <button style="width: 40vw;" @click="submit" type="button" :class="SubmitBottonClass">
-                    发表评论
-                </button>
-                <!--                <button @click="goback" type="button" class="mui-btn mui-btn-danger">-->
-                <!--                    返回-->
-                <!--                </button>-->
-                <a> </a>
-            </div>
+
+
+            <a v-show="show" :class="writeAnimate" @click="toWrite">
+                <span class="bbb">
+                    <i class="layui-icon layui-icon-edit"
+                        style="position: relative;top: 8px; font-size: 30px; color: white;"></i>
+                </span>
+            </a>
+
         </div>
-        <nav v-show="navShow" class="mui-bar mui-bar-tab" style="background: #F7F7F7;">
-            <div class="mui-tab-item" @click="goback">
-                <span class="mui-tab-label">
-                    <i class="layui-icon layui-icon-left" style="color: #5B5B5B;"></i>
-                </span>
+        <div id="right">
+            <div class="mui-card" style="background-color: transparent;box-shadow: none;margin:20px 10px;">
+                <div class="mui-card-header" style="font-size: 4vw;">
+                    <h5>{{newsTitle}}</h5>
+                </div>
+                <div class="mui-card-content" style="border-top: 1px solid #EAEAEA; border-bottom: 1px solid #EAEAEA;">
+                    <div class="mui-card-content-inner">
+                        <div class="mui-input-row" style="margin: 10px 5px;">
+                            <textarea style="background-color: transparent; border: none;" id="textarea" rows="5"
+                                @input="inwrite" placeholder="请输入评论" v-model="form.comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="mui-card-footer" style="margin-top: 20px;">
+                    <a> </a>
+                    <button style="width: 40vw;" @click="submit" type="button" :class="SubmitBottonClass">
+                        发表评论
+                    </button>
+                    <!--                <button @click="goback" type="button" class="mui-btn mui-btn-danger">-->
+                    <!--                    返回-->
+                    <!--                </button>-->
+                    <a> </a>
+                </div>
             </div>
-            <div class="mui-tab-item">
-                <span class="mui-tab-label">
-                    <i class="layui-icon layui-icon-right" style="color:#E0E0E0;"></i>
-                </span>
-            </div>
-        </nav>
+            <nav v-show="navShow" class="mui-bar mui-bar-tab" style="background: #F7F7F7;">
+                <div class="mui-tab-item" @click="goback">
+                    <span class="mui-tab-label">
+                        <i class="layui-icon layui-icon-left" style="color: #5B5B5B;"></i>
+                    </span>
+                </div>
+                <div class="mui-tab-item">
+                    <span class="mui-tab-label">
+                        <i class="layui-icon layui-icon-right" style="color:#E0E0E0;"></i>
+                    </span>
+                </div>
+            </nav>
 
 
+        </div>
     </div>
-</div>
 
 </body>
 
@@ -299,12 +302,12 @@
         const app = new Vue({
             el: "#app",
             data: {
-                classStyle: {//点赞的class
+                classStyle: { //点赞的class
                     "heart": true,
                     "heartAnimation": false,
                     rel: "like"
                 },
-                writeAnimate: {//写评论的悬浮按钮的class
+                writeAnimate: { //写评论的悬浮按钮的class
                     "animated ": true,
                     "write": true,
                     "bounceOutLeft": true,
@@ -318,13 +321,13 @@
                     "yes": false
                 },
                 isShow: false,
-                newsTitle: "",//新闻标题
-                newsTime: "",//新闻时间
-                info: "",//新闻详情
-                LookNumber: 0,//新闻阅读量
+                newsTitle: "", //新闻标题
+                newsTime: "", //新闻时间
+                info: "", //新闻详情
+                LookNumber: 0, //新闻阅读量
                 //是否有评论
-                iscommentList: false,//默认没有
-                iscommentList_no_text: "暂无评论",//没有评论时显示的文字
+                iscommentList: false, //默认没有
+                iscommentList_no_text: "暂无评论", //没有评论时显示的文字
                 No_icon: "../images/dianzNo.png",
                 Yes_icon: "../images/dianzYes.png",
 
@@ -341,146 +344,158 @@
                 NoName: "未知用户",
 
                 footStyle: "background: #F2F2F2;",
-                commentHight: $(".mui-card-footer").offset().top,//留言板标签的高度
-                Count: 0,//点赞数量
-                isClick: false,//是否被点击
-                show: false,//是否显示点赞头
-                navShow: false,//下方导航栏是否显示
-                islock: false,//锁住数字
+                commentHight: $(".mui-card-footer").offset().top, //留言板标签的高度
+                Count: 0, //点赞数量
+                isClick: false, //是否被点击
+                show: false, //是否显示点赞头
+                navShow: false, //下方导航栏是否显示
+                islock: false, //锁住数字
                 comentTitleStyle: "color: #888888;",
                 commentItemStyle: "color: #333333;width:100%;word-wrap: break-word;word-break: break-all;overflow: hidden;white-space:normal;",
-                commentList: []
-                , form: {//表单提交
+                commentList: [],
+                form: { //表单提交
                     comment: "",
-                    articleId: "",//文章的id
-                    channelId: ""//栏目的id
+                    articleId: "", //文章的id
+                    channelId: "" //栏目的id
                 }
-            }
-            , methods: {
+            },
+            methods: {
                 //根据id获取新闻详情
                 getInfo: () => {
-                    ajaxSubmit({articleId: app.form.articleId}, Api.Article.info, "GET", (res) => {
-                        let aa = res.data;
-                        app.newsTitle = aa.title;//赋值标题
-                        app.newsTime = timestampToTime(aa.createDate);//新闻发表时间
-                        app.info = aa.content;//新闻内容
+                        ajaxSubmit({
+                            articleId: app.form.articleId
+                        }, Api.Article.info, "GET", (res) => {
+                            let aa = res.data;
+                            app.newsTitle = aa.title; //赋值标题
+                            app.newsTime = timestampToTime(aa.createDate); //新闻发表时间
+                            app.info = aa.content; //新闻内容
 
-                        // $("#name").html(aa.title);
-                        // $(document).attr("title", aa.title);//修改title值
+                            // $("#name").html(aa.title);
+                            // $(document).attr("title", aa.title);//修改title值
 
-                        dd.biz.navigation.setTitle({
-                            title: aa.title,//控制标题文本，空字符串表示显示默认文本
-                            onSuccess: function (result) {
-                                /*结构
-                                {
-                                }*/
-                            },
-                            onFail: function (err) {
-                            }
-                        });
-
-                        app.isShow = true;
-                    }, (err) => {
-                        console.log(err);
-                    });
-                }
-                //根据id获取评论列表
-                , getcommentList: () => {
-                    ajaxSubmit(null, Api.Article.CommentList + "?page=1&limit=999999&articleId=" + app.form.articleId + "&type=1", "POST", (res) => {
-                        let aa = res.data.records;//评论列表
-                        if (aa.length > 0) {//如果有评论
-                            app.commentList = [];
-                            app.iscommentList = true;
-                            $.each(aa, (idx, obj) => {
-                                let icon;
-                                let userName;
-                                if (obj.updateUser != undefined) {
-                                    icon = obj.updateUser.icon;
-                                    if (icon == "" || icon == null || icon == undefined) {
-                                        icon = app.NoIcon;
-                                    }
-                                    userName = obj.updateUser.loginName;
-                                } else {
-                                    icon = app.NoIcon;
-                                    userName = app.NoName;
-                                }
-
-                                let count = obj.blogInteractions.length;
-
-                                let type;
-                                $.each(obj.blogInteractions, (_idx, _obj) => {
-                                    if (_obj.createId == localStorage.getItem("userId")) {
-                                        type = true;
-                                    } else {
-                                        type = false;
-                                    }
-                                });
-
-                                let icon2;
-                                if (type) {
-                                    icon2 = app.Yes_icon;
-                                } else {
-                                    icon2 = app.No_icon;
-                                }
-                                app.commentList.push({
-                                    time: timestampToTime(obj.createDate),
-                                    userName: userName,//用户名
-                                    userTouxiang: icon,//用户头像
-                                    comment: obj.content,//用户评论
-                                    count: count,//点赞数量
-                                    type: type,//是否点过了
-                                    icon: icon2,//点赞图标
-                                    id: obj.id//评论的id
-                                })
-
+                            dd.biz.navigation.setTitle({
+                                title: aa.title, //控制标题文本，空字符串表示显示默认文本
+                                onSuccess: function (result) {
+                                    /*结构
+                                    {
+                                    }*/
+                                },
+                                onFail: function (err) {}
                             });
-                        }
 
-                    }, (err) => {
-                        console.log(err);
-                    });
-                }
-                //获取阅读量
-                , getLookNumber() {
-                    ajaxSubmit({articleId: app.form.articleId}, Api.Article.LookNumber, "POST-1", (res) => {
-                        app.LookNumber = res.data;//赋值阅读量
+                            app.isShow = true;
+                        }, (err) => {
+                            console.log(err);
+                        });
+                    }
+                    //根据id获取评论列表
+                    ,
+                getcommentList: () => {
+                        ajaxSubmit(null, Api.Article.CommentList + "?page=1&limit=999999&articleId=" +
+                            app.form.articleId + "&type=1", "POST", (res) => {
+                                let aa = res.data.records; //评论列表
+                                if (aa.length > 0) { //如果有评论
+                                    app.commentList = [];
+                                    app.iscommentList = true;
+                                    $.each(aa, (idx, obj) => {
+                                        let icon;
+                                        let userName;
+                                        if (obj.updateUser != undefined) {
+                                            icon = obj.updateUser.icon;
+                                            if (icon == "" || icon == null || icon ==
+                                                undefined) {
+                                                icon = app.NoIcon;
+                                            }
+                                            userName = obj.updateUser.loginName;
+                                        } else {
+                                            icon = app.NoIcon;
+                                            userName = app.NoName;
+                                        }
+
+                                        let count = obj.blogInteractions.length;
+
+                                        let type;
+                                        $.each(obj.blogInteractions, (_idx, _obj) => {
+                                            if (_obj.createId == localStorage
+                                                .getItem("userId")) {
+                                                type = true;
+                                            } else {
+                                                type = false;
+                                            }
+                                        });
+
+                                        let icon2;
+                                        if (type) {
+                                            icon2 = app.Yes_icon;
+                                        } else {
+                                            icon2 = app.No_icon;
+                                        }
+                                        app.commentList.push({
+                                            time: timestampToTime(obj.createDate),
+                                            userName: userName, //用户名
+                                            userTouxiang: icon, //用户头像
+                                            comment: obj.content, //用户评论
+                                            count: count, //点赞数量
+                                            type: type, //是否点过了
+                                            icon: icon2, //点赞图标
+                                            id: obj.id //评论的id
+                                        })
+
+                                    });
+                                }
+
+                            }, (err) => {
+                                console.log(err);
+                            });
+                    }
+                    //获取阅读量
+                    ,
+                getLookNumber() {
+                    ajaxSubmit({
+                        articleId: app.form.articleId
+                    }, Api.Article.LookNumber, "POST-1", (res) => {
+                        app.LookNumber = res.data; //赋值阅读量
                     }, (err) => {
 
                     })
                 }
                 //评论点赞
-                , dinzan_2: (idx, type, id) => {
-                    let list = app.commentList[idx];
-                    if (type) {
-                        list.type = false;
-                        list.icon = app.No_icon;
-                        list.count = list.count - 1;
-                    } else {
-                        list.type = true;
-                        list.icon = app.Yes_icon;
-                        list.count = list.count + 1;
+                ,
+                dinzan_2: (idx, type, id) => {
+                        let list = app.commentList[idx];
+                        if (type) {
+                            list.type = false;
+                            list.icon = app.No_icon;
+                            list.count = list.count - 1;
+                        } else {
+                            list.type = true;
+                            list.icon = app.Yes_icon;
+                            list.count = list.count + 1;
+                        }
+
+                        ajaxSubmit({
+                            userId: localStorage.getItem("userId"),
+                            commentId: id
+                        }, Api.Article.CommentLike, "GET", (res) => {
+                            console.log("点赞成功");
+                        }, (err) => {
+                            wu.showMessage({
+                                title: err,
+                                type: "error"
+                            });
+                        })
+
+
                     }
-
+                    //根据id获取点赞列表
+                    ,
+                getLikeList: () => {
                     ajaxSubmit({
-                        userId: localStorage.getItem("userId"),
-                        commentId: id
-                    }, Api.Article.CommentLike, "GET", (res) => {
-                        console.log("点赞成功");
-                    }, (err) => {
-                        wu.showMessage({
-                            title: err,
-                            type: "error"
-                        });
-                    })
-
-
-                }
-                //根据id获取点赞列表
-                , getLikeList: () => {
-                    ajaxSubmit({articleId: app.form.articleId}, Api.Article.likeList, "GET", (res) => {
+                        articleId: app.form.articleId
+                    }, Api.Article.likeList, "GET", (res) => {
                         let aa = res.data;
                         let userid = localStorage.getItem("userId");
-                        app.Like.count = aa.length;//点赞数数量
+                        app.Like.count = aa.length; //点赞数数量
                         let i = false;
                         $.each(aa, (idx, obj) => {
                             if (obj.createId == userid) {
@@ -504,8 +519,8 @@
                     }, (err) => {
                         console.log(err);
                     });
-                }
-                , toLike(type, id) {
+                },
+                toLike(type, id) {
                     if (type) {
                         app.Like.type = false;
                         app.Like.count = app.Like.count - 1;
@@ -518,7 +533,8 @@
                     app.articleLike(id);
                 }
                 //根据id来点赞和取消点赞
-                , articleLike: () => {
+                ,
+                articleLike: () => {
                     ajaxSubmit({
                         articleId: app.form.articleId,
                         userId: localStorage.getItem("userId")
@@ -527,28 +543,36 @@
                     }, (err) => {
                         console.log(err);
                     });
-                }
-                , toWrite: () => { //显示留言板
+                },
+                toWrite: () => { //显示留言板
                     app.show = false;
                     console.log(app.commentHight);
                     console.log("获得的值为--", this);
-                    $("#right").animate({left: "0"});
+                    $("#right").animate({
+                        left: "0"
+                    });
 
-                    $("#left").animate({right: "100%"}, function () {
+                    $("#left").animate({
+                        right: "100%"
+                    }, function () {
                         $("#left").hide();
                         app.navShow = true;
                     });
-                }
-                , goback: () => {//返回新闻详情
+                },
+                goback: () => { //返回新闻详情
                     $("#left").show();
                     app.navShow = false;
-                    $("#right").animate({left: "100%"});
+                    $("#right").animate({
+                        left: "100%"
+                    });
 
-                    $("#left").animate({right: "0"}, function () {
+                    $("#left").animate({
+                        right: "0"
+                    }, function () {
                         go($(".mui-table-view"));
                     });
-                }
-                , inwrite: () => {
+                },
+                inwrite: () => {
                     let val = app.form.comment;
                     if (val != "" && val != null) {
                         app.SubmitBottonClass["no"] = false;
@@ -557,10 +581,10 @@
                         app.SubmitBottonClass["no"] = true;
                         app.SubmitBottonClass["yes"] = false;
                     }
-                }
-                , tofx() {
+                },
+                tofx() {
                     dd.biz.util.share({
-                        type: 0,//分享类型，0:全部组件 默认；1:只能分享到钉钉；2:不能分享，只有刷新按钮
+                        type: 0, //分享类型，0:全部组件 默认；1:只能分享到钉钉；2:不能分享，只有刷新按钮
                         url: Api.html_url + "?id=" + app.form.articleId + "&newsType=" + app.form.channelId,
                         title: app.newsTitle,
                         content: sessionStorage.getItem("content"),
@@ -569,28 +593,31 @@
                             //onSuccess将在调起分享组件成功之后回调
                             /**/
                         },
-                        onFail: function (err) {
-                        }
+                        onFail: function (err) {}
                     });
-                }
-                , submit: () => {//提交
+                },
+                submit: () => { //提交
 
                     if (app.SubmitBottonClass["yes"]) {
                         let value = app.form.comment;
                         console.log("获得的值为--", value);
-                        ajaxSubmit({text: "text"}, Api.Article.saveComment + "?content=" + value + "&articleId=" + app.form.articleId + "&channelId=" + app.form.channelId + "&userId=" + localStorage.getItem("userId"), "POST", (res) => {
-                            app.getcommentList();//刷新评论列表
-                            wu.showMessage({
-                                title: "发表评论成功",
-                                type: "success"
+                        ajaxSubmit({
+                                text: "text"
+                            }, Api.Article.saveComment + "?content=" + value + "&articleId=" +
+                            app.form.articleId + "&channelId=" + app.form.channelId +
+                            "&userId=" + localStorage.getItem("userId"), "POST", (res) => {
+                                app.getcommentList(); //刷新评论列表
+                                wu.showMessage({
+                                    title: "发表评论成功",
+                                    type: "success"
+                                });
+                                setTimeout(() => {
+                                    app.goback();
+                                    app.form.comment = "";
+                                }, 1000);
+                            }, (err) => {
+                                console.log(err);
                             });
-                            setTimeout(() => {
-                                app.goback();
-                                app.form.comment = "";
-                            }, 1000);
-                        }, (err) => {
-                            console.log(err);
-                        });
 
 
                     }
@@ -619,21 +646,20 @@
             app.form.channelId = GetQueryString("newsType");
 
 
-            app.getInfo();//获得详情
-            app.getcommentList();//获取评论
-            app.getLikeList();//判断是否以前就点赞了
-            app.getLookNumber();//获取阅读量
+            app.getInfo(); //获得详情
+            app.getcommentList(); //获取评论
+            app.getLikeList(); //判断是否以前就点赞了
+            app.getLookNumber(); //获取阅读量
 
 
             dd.biz.navigation.setRight({
-                show: true,//控制按钮显示， true 显示， false 隐藏， 默认true
-                control: true,//是否控制点击事件，true 控制，false 不控制， 默认false
-                text: '分享',//控制显示文本，空字符串表示显示默认文本
+                show: true, //控制按钮显示， true 显示， false 隐藏， 默认true
+                control: true, //是否控制点击事件，true 控制，false 不控制， 默认false
+                text: '分享', //控制显示文本，空字符串表示显示默认文本
                 onSuccess: function (result) {
                     app.tofx();
                 },
-                onFail: function (err) {
-                }
+                onFail: function (err) {}
             });
 
 
@@ -659,7 +685,7 @@
                     app.classStyle["heartAnimation"] = true;
                     app.classStyle.rel = "unlike";
                     // $(this).addClass("heartAnimation").attr("rel", "unlike");
-                    app.isClick = true;//被点击了
+                    app.isClick = true; //被点击了
                 } else {
                     // $("#likeCount" + messageID).html(C - 1);
                     app.Count = C - 1;
@@ -668,7 +694,7 @@
                     app.classStyle.rel = "like";
                     // $(this).removeClass("heartAnimation").attr("rel", "like");
                     $(this).css("background-position", "left");
-                    app.isClick = false;//取消点击
+                    app.isClick = false; //取消点击
                 }
 
                 //开始点赞或取消点赞
@@ -679,7 +705,7 @@
 
             $(window).scroll(function () {
                 // console.log($(window).scrollTop() + $(window).height()-$(document).height());
-                let i = $(window).scrollTop();// + $(window).height()-$(document).height();
+                let i = $(window).scrollTop(); // + $(window).height()-$(document).height();
                 // console.log(i,"--",app.commentHight);
 
                 if (i >= app.commentHight) {
@@ -723,4 +749,5 @@
     });
 </script>
 <script src="../../js/common/istoken.js"></script>
+
 </html>

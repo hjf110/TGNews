@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title id="name"></title>
@@ -16,6 +17,7 @@
         [v-cloak] {
             display: none;
         }
+
         * {
             touch-action: pan-y;
         }
@@ -83,80 +85,81 @@
 
 
 </head>
+
 <body>
-<div id="info" v-cloak>
-    <div class="mui-content" v-if="islogin" >
-        <div id="box">
-            <div v-show="isShow">
-                <div class="info-item" v-for="(item,idx) in list">
-                    <div class="info-item-time">{{item.newsTime}}</div>
-                    <div class="mui-card" @click="toherf(item.id,item.remark,item.img)">
-                        <div class="mui-card-header mui-card-media" :style="item.indexImg">
-                            <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
-                        </div>
-                        <div class="mui-card-content">
-                            <div class="mui-card-content-inner">
-                                <p>{{item.newsTime}}</p>
-                                <p style="color: #333;">{{item.remark}}</p>
+    <div id="info" v-cloak>
+        <div class="mui-content" v-if="islogin">
+            <div id="box">
+                <div v-show="isShow">
+                    <div class="info-item" v-for="(item,idx) in list">
+                        <div class="info-item-time">{{item.newsTime}}</div>
+                        <div class="mui-card" @click="toherf(item.id,item.remark,item.img)">
+                            <div class="mui-card-header mui-card-media" :style="item.indexImg">
+                                <div style="position: absolute;bottom: 10px;width: 96%;">{{item.title}}</div>
                             </div>
-                        </div>
-                        <div class="mui-card-footer" @click="toherf(item.id)">
-                            <div class="mui-card-link">详情</div>
-                            <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+                            <div class="mui-card-content">
+                                <div class="mui-card-content-inner">
+                                    <p>{{item.newsTime}}</p>
+                                    <p style="color: #333;">{{item.remark}}</p>
+                                </div>
+                            </div>
+                            <div class="mui-card-footer" @click="toherf(item.id)">
+                                <div class="mui-card-link">详情</div>
+                                <a class="mui-card-link"><span class="mui-icon mui-icon-arrowright"></span></a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div v-if="have" class="bottom-foot font-color"><i
+                        class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}
+                </div>
+                <div v-else class="bottom-foot font-color">{{loading.finish}}</div>
+
             </div>
-            <div v-if="have" class="bottom-foot font-color"><i
-                    class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>{{loading.loadingTitle}}
+
+            <!-- <nav id="foot" class="mui-bar mui-bar-tab hide">
+                <a class="mui-tab-item" href="#Popover_0">新人必点</a>
+                <a class="mui-tab-item" href="#Popover_1">学院指南</a>
+                <a class="mui-tab-item">学习平台</a>
+                <a class="mui-tab-item">学院动态</a>
+            </nav>
+            <div id="Popover_0" class="mui-popover mui-bar-popover">
+                <div class="mui-popover-arrow"></div>
+                <ul class="mui-table-view">
+                    <li class="mui-table-view-cell"><a href="#">高管认知</a>
+                    </li>
+                    <li class="mui-table-view-cell"><a href="#">分店介绍</a>
+                    </li>
+                </ul>
             </div>
-            <div v-else class="bottom-foot font-color">{{loading.finish}}</div>
+            <div id="Popover_1" class="mui-popover mui-bar-popover">
+                <div class="mui-popover-arrow"></div>
+                <ul class="mui-table-view">
+                    <li class="mui-table-view-cell"><a href="#">学院简介</a>
+                    </li>
+                    <li class="mui-table-view-cell"><a href="#">师资团队</a>
+                    </li>
+                    <li class="mui-table-view-cell"><a href="#">培训制度</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="Popover_2" class="mui-popover mui-bar-popover">
+                <div class="mui-popover-arrow"></div>
+                <ul class="mui-table-view">
+                    <li class="mui-table-view-cell"><a href="#">公司新闻</a>
+                    </li>
+                    <li class="mui-table-view-cell"><a href="#">行业新闻</a>
+                    </li>
+                </ul>
+            </div> -->
+
 
         </div>
 
-        <nav id="foot" class="mui-bar mui-bar-tab hide">
-            <a class="mui-tab-item" href="#Popover_0">新人必点</a>
-            <a class="mui-tab-item" href="#Popover_1">学院指南</a>
-            <a class="mui-tab-item">学习平台</a>
-            <a class="mui-tab-item">学院动态</a>
-        </nav>
-        <div id="Popover_0" class="mui-popover mui-bar-popover">
-            <div class="mui-popover-arrow"></div>
-            <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="#">高管认知</a>
-                </li>
-                <li class="mui-table-view-cell"><a href="#">分店介绍</a>
-                </li>
-            </ul>
+        <div v-else>
+            {{errorMsg}}
         </div>
-        <div id="Popover_1" class="mui-popover mui-bar-popover">
-            <div class="mui-popover-arrow"></div>
-            <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="#">学院简介</a>
-                </li>
-                <li class="mui-table-view-cell"><a href="#">师资团队</a>
-                </li>
-                <li class="mui-table-view-cell"><a href="#">培训制度</a>
-                </li>
-            </ul>
-        </div>
-        <div id="Popover_2" class="mui-popover mui-bar-popover">
-            <div class="mui-popover-arrow"></div>
-            <ul class="mui-table-view">
-                <li class="mui-table-view-cell"><a href="#">公司新闻</a>
-                </li>
-                <li class="mui-table-view-cell"><a href="#">行业新闻</a>
-                </li>
-            </ul>
-        </div>
-
-
     </div>
-
-    <div v-else>
-        {{errorMsg}}
-    </div>
-</div>
 </body>
 
 <script src="../../js/layer.mobile-v2.0/layer_mobile/layer.js"></script>
@@ -167,28 +170,26 @@
 <script src="../../js/common/localjs.js"></script>
 <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.7.13/dingtalk.open.js"></script>
 <script>
-
-
     // layer.msg("ceshi", {icon: 2, time: 0, shade: 0.7});
     let newsType;
     dd.ready(function () {
         let app = new Vue({
             el: "#info",
             data: {
-                isShow:false,
+                isShow: false,
                 islogin: true,
-                errorMsg: "",//错误信息
-                page: 1,//页数
-                limit: 10,//每页显示多少条数据
-                newsType: "",//微应用类型
-                have: true,//下一页是否有数据
-                islock: true,//是否锁住
+                errorMsg: "", //错误信息
+                page: 1, //页数
+                limit: 10, //每页显示多少条数据
+                newsType: "", //微应用类型
+                have: true, //下一页是否有数据
+                islock: true, //是否锁住
                 boxClass: {
                     "ww": false
                 },
                 loading: {
-                    loadingTitle: "加载中",//加载中显示的文本,
-                    finish: "没有更多了",//没有更多数据显示的文本
+                    loadingTitle: "加载中", //加载中显示的文本,
+                    finish: "没有更多了", //没有更多数据显示的文本
                 },
                 list: []
             },
@@ -196,12 +197,13 @@
 
             },
             methods: {
-                toherf(event,remark,img) {//点击跳转
+                toherf(event, remark, img) { //点击跳转
                     console.log(event);
+
                     //跳转到详情页面
                     window.location.href = "newsinfo.html?id=" + event + "&newsType=" + app.newsType;
-                    sessionStorage.setItem("content",remark);
-                    sessionStorage.setItem("img",img);
+                    sessionStorage.setItem("content", remark);
+                    sessionStorage.setItem("img", img);
                 }
             }
 
@@ -241,15 +243,19 @@
         //获得下一页
         const getList = () => {
             // console.log("进来了");
-            if (app.have && app.islock) {//如果不是最后一页
-                app.islock = false;//锁住
+            if (app.have && app.islock) { //如果不是最后一页
+                app.islock = false; //锁住
                 console.log("发送下一页请求-----");
 
                 let page = app.page;
                 let limit = app.limit;
 
-                ajaxSubmit({page: page, limit: limit, channelId: app.newsType}, Api.Article.list, "GET", (e) => {
-                    app.islock = true;//开锁,,请求成功后就开锁
+                ajaxSubmit({
+                    page: page,
+                    limit: limit,
+                    channelId: app.newsType
+                }, Api.Article.list, "GET", (e) => {
+                    app.islock = true; //开锁,,请求成功后就开锁
                     let aa = e.data;
                     if (aa.length > 0) {
                         $.each(aa, (idx, obj) => {
@@ -295,32 +301,48 @@
 
         newsType = GetQueryString("type");
         // newsType = 2;
-        $("#name").html(GetQueryString("name"));
+        // $("#name").html(GetQueryString("name"));
+
+
+        let titleName = GetQueryString("name");
+
+        dd.biz.navigation.setTitle({
+            title: titleName, //控制标题文本，空字符串表示显示默认文本
+            onSuccess: function (result) {
+                /*结构
+                {
+                }*/
+            },
+            onFail: function (err) {}
+        });
         app.newsType = newsType;
         // console.log(this);
-        if (newsType == 5) {//说明是管理学院进入
-            $("#box").css({"height": "93vh", "overflow": "auto"});
-            $("#foot").show();
+        if (newsType == 26 || newsType == 30) { //说明是管理学院进入
+            $("#box").css({
+                "height": "93vh",
+                "overflow": "auto"
+            });
+            // $("#foot").show();
         }
 
 
-        getList();//获取列表详情
+        getList(); //获取列表详情
 
 
-        if (newsType != 5) {//没有导航栏的页面
+        if (newsType != 26 && newsType != 30) { //没有导航栏的页面
             $(window).scroll(function () {
                 // console.log($(window).scrollTop() + $(window).height()-$(document).height());
                 let i = $(window).scrollTop() + $(window).height() - $(document).height();
                 // console.log(i);
-                if (i == 0 || i == 0.5 || i == -1) {//页面滚动到了底部
+                if (i == 0 || i == 0.5 || i == -1) { //页面滚动到了底部
                     getList();
                 } else {
                     app.have = true;
                 }
             });
-        } else {//有导航栏的页面
+        } else { //有导航栏的页面
             var nScrollHight = 0; //滚动距离总长(注意不是滚动条的长度)
-            var nScrollTop = 0;   //滚动到的当前位置
+            var nScrollTop = 0; //滚动到的当前位置
             var nDivHight = $("#box").height();
             $("#box").scroll(function () {
                 nScrollHight = $(this)[0].scrollHeight;
@@ -336,7 +358,7 @@
 
 
     });
-
 </script>
 <script src="../../js/common/istoken.js"></script>
+
 </html>
