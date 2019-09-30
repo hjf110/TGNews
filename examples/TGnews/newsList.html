@@ -242,8 +242,9 @@
 
 
         });
+        
 
-
+        
 
 
         //获得下一页
@@ -256,6 +257,9 @@
                 let page = app.page;
                 let limit = app.limit;
 
+
+                
+               
                 ajaxSubmit({
                     page: page,
                     limit: limit,
@@ -301,7 +305,7 @@
         app.newsType = newsType;
         let TitleName;
         if (newsType == 2) {
-            appid = 1;
+            // appid = 1;
             // $("#name").html("天港新闻");
             TitleName = "天港新闻";
         } else if (newsType == 19) {

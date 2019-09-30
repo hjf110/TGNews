@@ -122,12 +122,6 @@
                         <div class="mui-card-header mui-card-media" :style="mainImage">
                             <div style="position: absolute;bottom: 10px;width: 96%;">{{mainTitle}}</div>
                         </div>
-                        <!-- <div class="mui-card-content">
-                            <div class="mui-card-content-inner">
-                                <p>{{item.newsTime}}</p>
-                                <p style="color: #333;">{{item.remark}}</p>
-                            </div>
-                        </div> -->
                         <div class="mui-card-footer" v-for="(item, index) in itemNewsList" :key="index">
                             <div class="textClass">{{item.newsName}}</div>
                             <div><img class="imgClass" :src="item.newsImg" alt=""></div>
@@ -153,11 +147,14 @@
 
     // $("#info").hide();
 
+
+
+
+
     let app = new Vue({
         el: "#info",
         data() {
             return {
-
                 mainTime: "2019-09-29 12:21:00",
                 mainTitle: "", //主新闻标题
                 mainImage: "", //主新闻展示图片
@@ -191,7 +188,7 @@
                         id:4,
                         newsName: "次新闻",
                         newsImg: "../images/shuijiao.jpg"
-                    }]
+                    }];
 
                     data.forEach((obj, idx) => {
                         if (idx == 0) {

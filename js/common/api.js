@@ -26,6 +26,7 @@ var Api = {
         CommentLike:baseURL+"showBlog/commentIns",//评论的点赞和取消
         likeList:baseURL+"showBlog/getLikeList",//获取点赞列表用于判断用户是否点赞了
         LookNumber:baseURL+"showBlog/click",//获取阅读量的接口
+        pushList:baseURL+"querySendNote",//推送文章列表查询
     }
 };
 
