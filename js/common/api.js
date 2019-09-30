@@ -1,10 +1,10 @@
 ﻿
 // 正式环境
-// var baseURL = "http://47.99.174.52:8083/kjcy/";
+// var baseURL = "http://121.196.197.69:8080/";
 
 
 // //测试环境
-var baseURL = "http://121.196.197.69:8080/";
+var baseURL = "http:///dd.ubertech.cn:8080/";
 
 // var baseURL_file = "http://dd.ubertech.cn:8082/";
 
@@ -26,7 +26,7 @@ var Api = {
         CommentLike:baseURL+"showBlog/commentIns",//评论的点赞和取消
         likeList:baseURL+"showBlog/getLikeList",//获取点赞列表用于判断用户是否点赞了
         LookNumber:baseURL+"showBlog/click",//获取阅读量的接口
-        pushList:baseURL+"querySendNote",//推送文章列表查询
+        pushList:baseURL+"showBlog/querySendNote",//推送文章列表查询
     }
 };
 
@@ -46,10 +46,3 @@ console.log = (function (oriLogFunc) {
         }
     }
 })(console.log);
-
-
-// layui.config({
-//     base: '../js/layuiadmin/' //静态资源所在路径
-// }).extend({
-//     notice: 'notice'//第三方通知插件
-// });

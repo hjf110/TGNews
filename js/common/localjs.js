@@ -2,8 +2,8 @@
 // var path = "http://47.99.174.52:8083/kjcy";//接口头地址
 
 //测试环境
-var path = "http://115.238.154.91:8083/kjcy";//接口头地址
-var pass = "Qyw6tX4f";// 8位随机签名加密码
+var path = "http://115.238.154.91:8083/kjcy"; //接口头地址
+var pass = "Qyw6tX4f"; // 8位随机签名加密码
 
 
 (function ($) {
@@ -72,11 +72,11 @@ const warningAlert = (msg, close) => {
         title: [
             '错误',
             'background-color: #FF4351; color:#fff;'
-        ]
-        , content: msg
-        , anim: "up"
-        , shade: 'background-color: rgba(0,0,0,0.7)'
-        , shadeClose: is
+        ],
+        content: msg,
+        anim: "up",
+        shade: 'background-color: rgba(0,0,0,0.7)',
+        shadeClose: is
 
     });
 };
@@ -101,12 +101,41 @@ function isPhoneNo(phone) {
 /*校验身份证格式*/
 function testId(value) {
     var vcity = {
-        11: "北京", 12: "天津", 13: "河北", 14: "山西", 15: "内蒙古",
-        21: "辽宁", 22: "吉林", 23: "黑龙江", 31: "上海", 32: "江苏",
-        33: "浙江", 34: "安徽", 35: "福建", 36: "江西", 37: "山东", 41: "河南",
-        42: "湖北", 43: "湖南", 44: "广东", 45: "广西", 46: "海南", 50: "重庆",
-        51: "四川", 52: "贵州", 53: "云南", 54: "西藏", 61: "陕西", 62: "甘肃",
-        63: "青海", 64: "宁夏", 65: "新疆", 71: "台湾", 81: "香港", 82: "澳门", 91: "国外"
+        11: "北京",
+        12: "天津",
+        13: "河北",
+        14: "山西",
+        15: "内蒙古",
+        21: "辽宁",
+        22: "吉林",
+        23: "黑龙江",
+        31: "上海",
+        32: "江苏",
+        33: "浙江",
+        34: "安徽",
+        35: "福建",
+        36: "江西",
+        37: "山东",
+        41: "河南",
+        42: "湖北",
+        43: "湖南",
+        44: "广东",
+        45: "广西",
+        46: "海南",
+        50: "重庆",
+        51: "四川",
+        52: "贵州",
+        53: "云南",
+        54: "西藏",
+        61: "陕西",
+        62: "甘肃",
+        63: "青海",
+        64: "宁夏",
+        65: "新疆",
+        71: "台湾",
+        81: "香港",
+        82: "澳门",
+        91: "国外"
     };
 
     // 判断是否为空
@@ -197,7 +226,8 @@ function testId(value) {
         if (len == '18') {
             var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
             var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');
-            var cardTemp = 0, i, valnum;
+            var cardTemp = 0,
+                i, valnum;
             for (i = 0; i < 17; i++) {
                 cardTemp += card.substr(i, 1) * arrInt[i];
             }
@@ -218,7 +248,8 @@ function testId(value) {
         if (card.length == '15') {
             var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
             var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');
-            var cardTemp = 0, i;
+            var cardTemp = 0,
+                i;
             card = card.substr(0, 6) + '19' + card.substr(6, card.length - 6);
             for (i = 0; i < 17; i++) {
                 cardTemp += card.substr(i, 1) * arrInt[i];
@@ -270,14 +301,16 @@ function testId(value) {
 
 //-----------------压缩图片----------------------------
 function convertBase64UrlToBlob(urlData) {
-    var bytes = window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+    var bytes = window.atob(urlData.split(',')[1]); //去掉url的头，并转换为byte
     //处理异常,将ascii码小于0的转换为大于0
     var ab = new ArrayBuffer(bytes.length);
     var ia = new Uint8Array(ab);
     for (var i = 0; i < bytes.length; i++) {
         ia[i] = bytes.charCodeAt(i);
     }
-    return new Blob([ab], {type: 'image/png'});
+    return new Blob([ab], {
+        type: 'image/png'
+    });
 }
 
 
@@ -321,7 +354,11 @@ function Add_ajaxSubmit(url, json, tableID) {
             // alert("添加成功");
             if (res.msg == "success") {
                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                parent.layui.table.reload(tableID, {page: {curr: 1}});
+                parent.layui.table.reload(tableID, {
+                    page: {
+                        curr: 1
+                    }
+                });
                 parent.layer.msg('添加成功');
                 parent.layer.close(index);
             }
@@ -370,7 +407,7 @@ var ImageajaxSubmit = function (base64url, url, type, method, imgName, isasync) 
         data: formData,
         type: type,
         headers: headers,
-        cache: false,    //上传文件不需缓存
+        cache: false, //上传文件不需缓存
         processData: false, //需设置为false。因为data值是FormData对象，不需要对数据做处理
         contentType: false, //需设置为false。因为是FormData对象，且已经声明了属性enctype="multipart/form-data"
         dataType: 'json',
@@ -400,7 +437,17 @@ var ImageajaxSubmit = function (base64url, url, type, method, imgName, isasync) 
 };
 
 
-//通用接口
+
+/**
+ *
+ *通用接口网络请求接口
+ * @param {*} submitData  传入的参数
+ * @param {*} url   接口地址
+ * @param {*} type  请求类型("post","get","post-1") 
+ * @param {*} method 成功的回调
+ * @param {*} error 失败的回调
+ * @param {*} isasync 是否同步
+ */
 var ajaxSubmit = function (submitData, url, type, method, error, isasync) {
     var data;
     var headers = {};
@@ -455,10 +502,10 @@ var ajaxSubmit = function (submitData, url, type, method, error, isasync) {
             console.log("2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status);
             console.log("3 异步调用返回失败,textStatus:" + textStatus);
             console.log("4 异步调用返回失败,errorThrown:" + errorThrown);
-            warningAlert("1 异步调用返回失败,XMLHttpResponse.readyState:" + XMLHttpResponse.readyState
-                + "2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status
-                + "3 异步调用返回失败,textStatus:" + textStatus
-                + "4 异步调用返回失败,errorThrown:" + errorThrown, true);
+            warningAlert("1 异步调用返回失败,XMLHttpResponse.readyState:" + XMLHttpResponse.readyState +
+                "2 异步调用返回失败,XMLHttpResponse.status:" + XMLHttpResponse.status +
+                "3 异步调用返回失败,textStatus:" + textStatus +
+                "4 异步调用返回失败,errorThrown:" + errorThrown, true);
         }
     });
 };
@@ -515,7 +562,13 @@ Array.prototype.push_unique = function () {
     }
 };
 
-//json对象数组去重
+
+/**
+ *
+ *数组去重
+ * @param {*} list 需要去重的数组
+ * @returns
+ */
 function unique(list) {
     var arr = [];
     for (var i = 0; i < list.length; i++) {
@@ -536,9 +589,13 @@ function unique(list) {
     return arr;
 };
 
-/*
-* 获取url上的参数
-* */
+
+/**
+ *
+ *获取url上的参数
+ * @param {*} name url上的参数名
+ * @returns
+ */
 function GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
@@ -547,7 +604,14 @@ function GetQueryString(name) {
 }
 
 
-//json对象数组去重
+
+/**
+ *json对象数组去重
+ *
+ * @param {*} list
+ * @param {*} id
+ * @returns
+ */
 function JsonUnique(list, id) {
     let arr = [];
     let b;
@@ -585,7 +649,7 @@ function timestampToTime(timestamp) {
     } else {
         i = 1;
     }
-    var date = new Date(timestamp * i);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var date = new Date(timestamp * i); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
     Y = date.getFullYear() + '-';
     M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
     D = date.getDate() + ' ';
@@ -596,8 +660,8 @@ function timestampToTime(timestamp) {
 }
 
 /*
-* 去掉字符串中的所有空格
-* */
+ * 去掉字符串中的所有空格
+ * */
 function Trim(str) {
     var result;
     result = result.replace(/\s/g, "");
@@ -605,9 +669,11 @@ function Trim(str) {
 }
 
 
-/*语音播报功能*/
 
-//html5语音播报
+/**
+ * 语音播报功能
+ * @param {*} textToSpeak  语音播报的内容
+ */
 function speak(textToSpeak) {
     //创建一个 SpeechSynthesisUtterance的实例
     var utterance = new SpeechSynthesisUtterance();
@@ -622,12 +688,12 @@ function speak(textToSpeak) {
 }
 
 /*
-* 获取当前时间
-* type参数
-* 1：获取年月日
-* 2：获取年月日时分秒
-* 3：获取年月日星期时分秒
-* */
+ * 获取当前时间
+ * type参数
+ * 1：获取年月日
+ * 2：获取年月日时分秒
+ * 3：获取年月日星期时分秒
+ * */
 function updateTime(type) {
     var date = new Date();
     this.year = date.getFullYear();
@@ -657,12 +723,12 @@ function updateTime(type) {
 
 
 /*
-* 转换时间格式
-* 参数说明
-* date 传入的时间显示格式的参数
-*  type 等于true时 返回 2015-03-19 12:00:00
-*        否则的话  返回 2015-03-19
-* */
+ * 转换时间格式
+ * 参数说明
+ * date 传入的时间显示格式的参数
+ *  type 等于true时 返回 2015-03-19 12:00:00
+ *        否则的话  返回 2015-03-19
+ * */
 const formatDateTime = (date, type) => {
     let y = date.getFullYear();
     let m = date.getMonth() + 1;
@@ -683,8 +749,8 @@ const formatDateTime = (date, type) => {
 
 
 /*
-* 根据元素值删除元素
-* */
+ * 根据元素值删除元素
+ * */
 function delList(arr, obj) {
     arr.splice($.inArray(obj, arr), 1);
 }
@@ -701,8 +767,8 @@ function checkEndTime(now, input) {
 
 
 /*
-* 判断两个json 是否相等的一系列方法
-* */
+ * 判断两个json 是否相等的一系列方法
+ * */
 
 function isObj(object) {
     return object && typeof (object) == 'object' && Object.prototype.toString.call(object).toLowerCase() == "[object object]";
@@ -722,7 +788,7 @@ function getLength(object) {
 function Compare(objA, objB) {
     if (!isObj(objA) || !isObj(objB)) return false; //判断类型是否正确
     if (getLength(objA) != getLength(objB)) return false; //判断长度是否一致
-    return CompareObj(objA, objB, true);//默认为true
+    return CompareObj(objA, objB, true); //默认为true
 }
 
 function CompareObj(objA, objB, flag) {
@@ -743,7 +809,8 @@ function CompareObj(objA, objB, flag) {
                 flag = false;
                 break;
             }
-            var oA = objA[key], oB = objB[key];
+            var oA = objA[key],
+                oB = objB[key];
             if (oA.length != oB.length) {
                 flag = false;
                 break;
@@ -777,7 +844,7 @@ compArray = function (array1, array2) {
     }
     return true;
 };
-compObj = function (obj1, obj2)//比较两个对象是否相等，不包含原形上的属性计较
+compObj = function (obj1, obj2) //比较两个对象是否相等，不包含原形上的属性计较
 {
     if ((obj1 && typeof obj1 === "object") && ((obj2 && typeof obj2 === "object"))) {
         var count1 = modeler.propertyLength(obj1);
@@ -786,23 +853,21 @@ compObj = function (obj1, obj2)//比较两个对象是否相等，不包含原�
             for (var ob in obj1) {
                 if (obj1.hasOwnProperty(ob) && obj2.hasOwnProperty(ob)) {
 
-                    if (obj1[ob].constructor == Array && obj2[ob].constructor == Array)//如果属性是数组
+                    if (obj1[ob].constructor == Array && obj2[ob].constructor == Array) //如果属性是数组
                     {
                         if (!modeler.compArray(obj1[ob], obj2[ob])) {
                             return false;
-                        }
-                        ;
-                    } else if (typeof obj1[ob] === "string" && typeof obj2[ob] === "string")//纯属性
+                        };
+                    } else if (typeof obj1[ob] === "string" && typeof obj2[ob] === "string") //纯属性
                     {
                         if (obj1[ob] !== obj2[ob]) {
                             return false;
                         }
-                    } else if (typeof obj1[ob] === "object" && typeof obj2[ob] === "object")//属性是对象
+                    } else if (typeof obj1[ob] === "object" && typeof obj2[ob] === "object") //属性是对象
                     {
                         if (!modeler.compObj(obj1[ob], obj2[ob])) {
                             return false;
-                        }
-                        ;
+                        };
                     } else {
                         return false;
                     }
@@ -817,7 +882,7 @@ compObj = function (obj1, obj2)//比较两个对象是否相等，不包含原�
 
     return true;
 };
-propertyLength = function (obj)//获得对象上的属性个数，不包含对象原形上的属性
+propertyLength = function (obj) //获得对象上的属性个数，不包含对象原形上的属性
 {
     var count = 0;
     if (obj && typeof obj === "object") {
@@ -835,8 +900,8 @@ propertyLength = function (obj)//获得对象上的属性个数，不包含对�
 
 
 /*去除所有空格
-* 第二个参数设为"g"
-* */
+ * 第二个参数设为"g"
+ * */
 function Trim(str, is_global) {
     var result;
     result = str.replace(/(^\s+)|(\s+$)/g, "");
@@ -858,27 +923,29 @@ String.prototype.replaceAll = function (targetStr, newStr) {
 
 
 Array.prototype.removeRepeatAttr = function () {
-    var tmp = {}, b = [], a = this;
+    var tmp = {},
+        b = [],
+        a = this;
     for (var i = 0; i < a.length; i++) {
         if (!tmp[a[i].car_vinno]) {
             tmp[a[i].car_vinno] = !0;
         } else {
             a.splice(i, 1);
         }
-    }
-    ;
+    };
 };
 
 Array.prototype.removeRepeatAttr_All = function (str) {
-    var tmp = {}, b = [], a = this;
+    var tmp = {},
+        b = [],
+        a = this;
     for (var i = 0; i < a.length; i++) {
         if (!tmp[a[i][str]]) {
             tmp[a[i][str]] = !0;
         } else {
             a.splice(i, 1);
         }
-    }
-    ;
+    };
 };
 
 
@@ -935,12 +1002,14 @@ function showPersonInfo(info, arrPerson) {
 }
 
 
-/*
-* 参数说明
-* str : 传入的时间戳
-* type==1时返回的是日期加时间
-* type==2时返回的是日期
-* */
+
+/**
+ *
+ * 根据时间戳转换为日期
+ * @param {*} str传入的时间戳
+ * @param {*} type type==1时返回的是日期加时间 type==2时返回的是日期
+ * @returns
+ */
 function getMyDate(str, type) {
     var oDate = new Date(str),
         oYear = oDate.getFullYear(),
@@ -952,7 +1021,7 @@ function getMyDate(str, type) {
     let oTime;
     switch (type) {
         case 1:
-            oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSen);//最后拼接时间
+            oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSen); //最后拼接时间
             break;
         case 2:
             oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay);
@@ -1071,12 +1140,12 @@ const sortby = (attr, rev) => {
 };
 
 /*
-* list 排序
-*
-* list  :  要排序的数组
-* attr  :  根据对象的哪个参数进行排序
-* rev   :  降序还是升序(true为升序,,false为降序)
-* */
+ * list 排序
+ *
+ * list  :  要排序的数组
+ * attr  :  根据对象的哪个参数进行排序
+ * rev   :  降序还是升序(true为升序,,false为降序)
+ * */
 
 
 const tosort = (list, attr, rev) => {
@@ -1085,10 +1154,10 @@ const tosort = (list, attr, rev) => {
 
 
 /*
-* 阿拉伯数字转为大写数字
-* 参数说明
-* str  :  要转为大写的阿拉伯数字
-* */
+ * 阿拉伯数字转为大写数字
+ * 参数说明
+ * str  :  要转为大写的阿拉伯数字
+ * */
 const smallTobig = (str) => {
     let a = "";
     switch (str) {
@@ -1175,19 +1244,19 @@ const smallTobig = (str) => {
 };
 
 
-function timeFn(d1) {//di作为一个变量传进来
+function timeFn(d1) { //di作为一个变量传进来
     //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
-    var dateBegin = new Date(d1.replace(/-/g, "/"));//将-转化为/，使用new Date
-    var dateEnd = new Date();//获取当前时间
-    var dateDiff = dateEnd.getTime() - dateBegin.getTime();//时间差的毫秒数
-    var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
-    var leave1 = dateDiff % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
-    var hours = Math.floor(leave1 / (3600 * 1000));   //计算出小时数
+    var dateBegin = new Date(d1.replace(/-/g, "/")); //将-转化为/，使用new Date
+    var dateEnd = new Date(); //获取当前时间
+    var dateDiff = dateEnd.getTime() - dateBegin.getTime(); //时间差的毫秒数
+    var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000)); //计算出相差天数
+    var leave1 = dateDiff % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+    var hours = Math.floor(leave1 / (3600 * 1000)); //计算出小时数
     //计算相差分钟数
-    var leave2 = leave1 % (3600 * 1000);    //计算小时数后剩余的毫秒数
-    var minutes = Math.floor(leave2 / (60 * 1000));   //计算相差分钟数
+    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+    var minutes = Math.floor(leave2 / (60 * 1000)); //计算相差分钟数
     //计算相差秒数
-    var leave3 = leave2 % (60 * 1000);    //计算分钟数后剩余的毫秒数
+    var leave3 = leave2 % (60 * 1000); //计算分钟数后剩余的毫秒数
     var seconds = Math.round(leave3 / 1000);
 
     console.log(Math.floor(dateDiff / (1000)));
@@ -1231,4 +1300,3 @@ function timeFn(d1) {//di作为一个变量传进来
 //         }
 //     });
 // });
-

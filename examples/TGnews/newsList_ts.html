@@ -119,12 +119,12 @@
                 <div class="info-item">
                     <div class="info-item-time">{{mainTime}}</div>
                     <div class="mui-card">
-                        <div class="mui-card-header mui-card-media" :style="mainImage">
+                        <div class="mui-card-header mui-card-media" :style="mainImage" @click="toherf(id,remark,img,newsType)" >
                             <div style="position: absolute;bottom: 10px;width: 96%;">{{mainTitle}}</div>
                         </div>
-                        <div class="mui-card-footer" v-for="(item, index) in itemNewsList" :key="index">
-                            <div class="textClass">{{item.newsName}}</div>
-                            <div><img class="imgClass" :src="item.newsImg" alt=""></div>
+                        <div class="mui-card-footer" v-for="(item, index) in itemNewsList" :key="index" @click="toherf(item.id,item.marks,item.showPic,item.channelId)" >
+                            <div class="textClass">{{item.title}}</div>
+                            <div><img class="imgClass" :src="item.showPic" alt=""></div>
                         </div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
 <script src="../../js/common/localjs.js"></script>
 <script>
     let newsType;
-    // dd.ready(function () {
+    dd.ready(function () {
 
     // $("#info").hide();
 
@@ -155,64 +155,64 @@
         el: "#info",
         data() {
             return {
-                mainTime: "2019-09-29 12:21:00",
+                pushId:"",//推送的id
+                id:"",//主新闻id
+                newsType:"",
+                remark:"",
+                img:"",
+                mainTime: updateTime(2),
                 mainTitle: "", //主新闻标题
                 mainImage: "", //主新闻展示图片
                 itemNewsList: [] //副新闻
             }
         },
         methods: {
-            toherf(event, remark, img) { //点击跳转
+            toherf(event, remark, img,newsType) { //点击跳转
                 console.log(event);
+                let _this = this;
+              
+ 
                 //跳转到详情页面
-                window.location.href = "newsinfo.html?id=" + event + "&newsType=" + app.newsType;
+                window.location.href = "newsinfo.html?id=" + event + "&newsType=" + newsType;
                 sessionStorage.setItem("content", remark);
                 sessionStorage.setItem("img", img);
             },
             getNews() {
                 const _this = this;
-                setTimeout(() => {
-                    let data = [{
-                        id:1,
-                        newsName: "主新闻",
-                        newsImg: "background-image:url(../images/muwu.jpg)"
-                    }, {
-                        id:2,
-                        newsName: "次新闻",
-                        newsImg: "../images/shuijiao.jpg"
-                    }, {
-                        id:3,
-                        newsName: "次新闻",
-                        newsImg: "../images/yuantiao.jpg"
-                    }, {
-                        id:4,
-                        newsName: "次新闻",
-                        newsImg: "../images/shuijiao.jpg"
-                    }];
-
-                    data.forEach((obj, idx) => {
+                ajaxSubmit({pushId:this.pushId},Api.Article.pushList,"GET",(res)=>{
+                    let list = res.data.blogArticleList;
+                    console.log(list);
+                    list.forEach((obj, idx) => {
                         if (idx == 0) {
-                            _this.mainTitle = obj.newsName;
-                            _this.mainImage = obj.newsImg;
+                            _this.mainTitle = obj.title;
+                            _this.mainImage = obj.showPic;
+                            _this.id = obj.id;
+                            _this.remark = obj.marks;
+                            _this.img = obj.showPic;
+                            _this.newsType = obj.channelId;
                         } else {
                             _this.itemNewsList.push(obj);
                         }
                     })
 
 
+                },(err)=>{
+                    // warningAlert(res.message, true);
+                    console.log(err);
+                })
 
-                }, 100);
             }
-
+        
         },
         mounted() { //实例渲染之前
             const _this = this;
-            _this.getNews();
+            // this.getNews();
 
-
-
-
-
+            //获取推送id
+            // let pushId = GetQueryString("id");
+            let pushId = 1;
+            this.pushId = pushId;
+            this.getNews();
 
 
         },
@@ -226,8 +226,8 @@
 
 
 
-    // });
+    });
 </script>
-<!-- <script src="../../js/common/istoken.js"></script> -->
+<script src="../../js/common/istoken.js"></script>
 
 </html>
