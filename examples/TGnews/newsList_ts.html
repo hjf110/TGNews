@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title id="name"></title>
+    <title id="name">消息推送</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -101,7 +101,8 @@
             line-height: 60px;
             /* border-bottom: 1px solid #E7E7E7; */
         }
-        .mui-card{
+
+        .mui-card {
             box-shadow: none;
         }
     </style>
@@ -119,10 +120,12 @@
                 <div class="info-item">
                     <div class="info-item-time">{{mainTime}}</div>
                     <div class="mui-card">
-                        <div class="mui-card-header mui-card-media" :style="mainImage" @click="toherf(id,remark,img,newsType)" >
+                        <div class="mui-card-header mui-card-media" :style="mainImage"
+                            @click="toherf(id,remark,img,newsType)">
                             <div style="position: absolute;bottom: 10px;width: 96%;">{{mainTitle}}</div>
                         </div>
-                        <div class="mui-card-footer" v-for="(item, index) in itemNewsList" :key="index" @click="toherf(item.id,item.marks,item.showPic,item.channelId)" >
+                        <div class="mui-card-footer" v-for="(item, index) in itemNewsList" :key="index"
+                            @click="toherf(item.id,item.marks,item.showPic,item.channelId)">
                             <div class="textClass">{{item.title}}</div>
                             <div><img class="imgClass" :src="item.showPic" alt=""></div>
                         </div>
@@ -145,83 +148,93 @@
     let newsType;
     dd.ready(function () {
 
-    // $("#info").hide();
+        // $("#info").hide();
 
 
+        // dd.biz.navigation.setTitle({
+        //     title: TitleName, //控制标题文本，空字符串表示显示默认文本
+        //     onSuccess: function (result) {
+        //         /*结构
+        //         {
+        //         }*/
+        //     },
+        //     onFail: function (err) {}
+        // });
 
 
-
-    let app = new Vue({
-        el: "#info",
-        data() {
-            return {
-                pushId:"",//推送的id
-                id:"",//主新闻id
-                newsType:"",
-                remark:"",
-                img:"",
-                mainTime: updateTime(2),
-                mainTitle: "", //主新闻标题
-                mainImage: "", //主新闻展示图片
-                itemNewsList: [] //副新闻
-            }
-        },
-        methods: {
-            toherf(event, remark, img,newsType) { //点击跳转
-                console.log(event);
-                let _this = this;
-              
- 
-                //跳转到详情页面
-                window.location.href = "newsinfo.html?id=" + event + "&newsType=" + newsType;
-                sessionStorage.setItem("content", remark);
-                sessionStorage.setItem("img", img);
+        let app = new Vue({
+            el: "#info",
+            data() {
+                return {
+                    pushId: "", //推送的id
+                    id: "", //主新闻id
+                    newsType: "",
+                    remark: "",
+                    img: "",
+                    mainTime: updateTime(2),
+                    mainTitle: "", //主新闻标题
+                    mainImage: "", //主新闻展示图片
+                    itemNewsList: [] //副新闻
+                }
             },
-            getNews() {
-                const _this = this;
-                ajaxSubmit({pushId:this.pushId},Api.Article.pushList,"GET",(res)=>{
-                    let list = res.data.blogArticleList;
-                    console.log(list);
-                    list.forEach((obj, idx) => {
-                        if (idx == 0) {
-                            _this.mainTitle = obj.title;
-                            _this.mainImage = obj.showPic;
-                            _this.id = obj.id;
-                            _this.remark = obj.marks;
-                            _this.img = obj.showPic;
-                            _this.newsType = obj.channelId;
-                        } else {
-                            _this.itemNewsList.push(obj);
-                        }
+            methods: {
+                toherf(event, remark, img, newsType) { //点击跳转
+                    console.log(event);
+                    let _this = this;
+
+
+                    //跳转到详情页面
+                    window.location.href = "newsinfo.html?id=" + event + "&newsType=" + newsType;
+                    sessionStorage.setItem("content", remark);
+                    sessionStorage.setItem("img", img);
+                },
+                getNews() {
+                    const _this = this;
+                    ajaxSubmit({
+                        pushId: this.pushId
+                    }, Api.Article.pushList, "GET", (res) => {
+                        let list = res.data.blogArticleList;
+                        console.log(list);
+                        list.forEach((obj, idx) => {
+                            if (idx == 0) {
+                                _this.mainTitle = obj.title;
+                                _this.mainImage = "background-image:url(" + obj.showPic + ")";
+                                _this.id = obj.id;
+                                _this.remark = obj.marks;
+                                _this.img = obj.showPic;
+                                _this.newsType = obj.channelId;
+                            } else {
+                                _this.itemNewsList.push(obj);
+                            }
+                        });
+
+
+                    }, (err) => {
+                        // warningAlert(res.message, true);
+                        console.log(err);
                     })
 
+                }
 
-                },(err)=>{
-                    // warningAlert(res.message, true);
-                    console.log(err);
-                })
+            },
+            mounted() { //实例渲染之前
+                const _this = this;
+                // this.getNews();
 
+                //获取推送id
+                // let pushId = GetQueryString("id");
+                let pushId = 10;
+                this.pushId = pushId;
+                this.getNews();
+
+
+            },
+            updated() { //实例渲染完后调用
+                // $("#info").hide();
             }
-        
-        },
-        mounted() { //实例渲染之前
-            const _this = this;
-            // this.getNews();
-
-            //获取推送id
-            // let pushId = GetQueryString("id");
-            let pushId = 1;
-            this.pushId = pushId;
-            this.getNews();
 
 
-        },
-        updated() { //实例渲染完后调用
-            // $("#info").hide();
-        }
-
-
-    });
+        });
 
 
 

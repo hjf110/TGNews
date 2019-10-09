@@ -1,10 +1,10 @@
 ﻿
 // 正式环境
-// var baseURL = "http://121.196.197.69:8080/";
+var baseURL = "http://121.196.197.69:8080/";
 
 
 // //测试环境
-var baseURL = "http:///dd.ubertech.cn:8080/";
+// var baseURL = "http:///dd.ubertech.cn:8080/";
 
 // var baseURL_file = "http://dd.ubertech.cn:8082/";
 

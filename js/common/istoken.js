@@ -34,11 +34,11 @@ dd.ready(function () {
 
     var token = localStorage.getItem('token');
     if (token == null || token == "") {
-        loginIn(appid);
+        loginIn(1);
     }else{
         setInterval(() => {
             if (timeFn(localStorage.getItem("startTime")) > 14410) {
-                loginIn(appid);
+                loginIn(1);
             }
         }, 1000);
     }

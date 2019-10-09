@@ -122,26 +122,27 @@
 
             <!-- 新人必点进入显示 -->
             <nav class="mui-bar mui-bar-tab" v-if="isnewPeople">
-                <a class="mui-tab-item" href="newsList_item.html?type=27&name=集团介绍" >
+                <a class="mui-tab-item" href="newsList_item.html?type=27&name=集团介绍" @click.prevent="toItem(27,'集团介绍')">
                     <i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>集团介绍
                 </a>
-                <a class="mui-tab-item" href="newsList_item.html?type=28&name=高管认知" >
+                <a class="mui-tab-item" href="newsList_item.html?type=28&name=高管认知" @click.prevent="toItem(28,'高管认知')">
                     <i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>高管认知
                 </a>
-                <a class="mui-tab-item" href="newsList_item.html?type=29&name=各店应知应会" >
+                <a class="mui-tab-item" href="newsList_item.html?type=29&name=各店应知应会"
+                    @click.prevent="toItem(29,'各店应知应会')">
                     <i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>各店应知应会
                 </a>
             </nav>
 
             <!-- 学院动态进入显示 -->
             <nav class="mui-bar mui-bar-tab" v-if="issydt">
-                <a class="mui-tab-item" href="newsList_item.html?type=31&name=学院简介" >
+                <a class="mui-tab-item" href="newsList_item.html?type=31&name=学院简介" @click.prevent="toItem(31,'学院简介')">
                     <i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>学院简介
                 </a>
-                <a class="mui-tab-item" href="newsList_item.html?type=32&name=师资团队">
+                <a class="mui-tab-item" href="newsList_item.html?type=32&name=师资团队" @click.prevent="toItem(32,'师资团队')">
                     <i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>师资团队
                 </a>
-                <a class="mui-tab-item" href="newsList_item.html?type=33&name=培训制度" >
+                <a class="mui-tab-item" href="newsList_item.html?type=33&name=培训制度" @click.prevent="toItem(33,'培训制度')">
                     <i class="layui-icon layui-icon-menu-fill" style="color:#E0E0E0"></i>培训制度
                 </a>
             </nav>
@@ -230,6 +231,10 @@
                     window.location.href = "newsinfo.html?id=" + event + "&newsType=" + app.newsType;
                     sessionStorage.setItem("content", remark);
                     sessionStorage.setItem("img", img);
+                },
+                toItem(type, name) {
+                    console.log(name);
+                    window.location.href = "newsList_item.html?type=" + type + "&name=" + name;
                 }
 
             },
@@ -242,9 +247,9 @@
 
 
         });
-        
 
-        
+
+
 
 
         //获得下一页
@@ -258,8 +263,8 @@
                 let limit = app.limit;
 
 
-                
-               
+
+
                 ajaxSubmit({
                     page: page,
                     limit: limit,
@@ -301,7 +306,7 @@
 
 
         newsType = GetQueryString("type");
-        // newsType = 2;
+        // newsType = 19;
         app.newsType = newsType;
         let TitleName;
         if (newsType == 2) {
@@ -391,11 +396,13 @@
 
             });
 
-        }
+        };
 
 
     });
 </script>
+
+
 <script src="../../js/common/istoken.js"></script>
 
 </html>

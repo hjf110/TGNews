@@ -461,6 +461,7 @@ var ajaxSubmit = function (submitData, url, type, method, error, isasync) {
         if (i.length > 0) {
             headers["Content-Type"] = "application/x-www-form-urlencoded";
             data = submitData;
+            type = i[0];
         } else {
             headers["Content-Type"] = "application/json";
             data = JSON.stringify(submitData);
