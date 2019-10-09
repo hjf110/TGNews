@@ -1,6 +1,6 @@
 ﻿
 // 正式环境
-var baseURL = "http://121.196.197.69:8080/";
+var baseURL = "http://dd.teckongroup.com:8080/";
 
 
 // //测试环境
@@ -11,7 +11,7 @@ var baseURL = "http://121.196.197.69:8080/";
 var appid;//栏目类型
 //接口地址和全局变量和log管理
 var Api = {
-    html_url:"http://121.196.197.69:8011/examples/TGnews/newsinfo.html",
+    html_url:"http://dd.teckongroup.com:8011/examples/TGnews/newsinfo.html",
     corpId:"ding7b1ccc17a486ca0b35c2f4657eb6378f",// 企业id
     Log:true,//全局console的开启和关闭
     Login:{
